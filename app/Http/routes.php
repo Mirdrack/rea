@@ -1,5 +1,8 @@
 <?php
 
+use Rea\User as User;
+use Illuminate\Http\Response as HttpResponse;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,3 +17,49 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::post('/signup', function () {
+   $credentials = Input::only('email', 'password');
+   //dd($credentials);
+   try {
+
+       $user = User::create($credentials);
+   } catch (Exception $e) 
+   {
+       return Response::json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+   }
+
+   $token = JWTAuth::fromUser($user);
+
+   return Response::json(compact('token'));
+});
+
+
+/*Route::post('/signin', function () {
+   $credentials = Input::only('email', 'password');
+
+   if ( ! $token = JWTAuth::attempt($credentials)) {
+       return Response::json(false, HttpResponse::HTTP_UNAUTHORIZED);
+   }
+
+   return Response::json(compact('token'));
+});*/
+
+Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
+Route::resource('session', 'SessionController');
+
+Route::get('/restricted', [
+   'before' => 'jwt-auth',
+   function () {
+       $token = JWTAuth::getToken();
+       $user = JWTAuth::toUser($token);
+
+       return Response::json([
+           'data' => [
+               'email' => $user->email,
+               'registered_at' => $user->created_at->toDateTimeString()
+           ]
+       ]);
+   }
+]);
