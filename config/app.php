@@ -148,6 +148,7 @@ return [
          * Extra providers
          */
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+        'Barryvdh\Cors\ServiceProvider',
 
     ],
 

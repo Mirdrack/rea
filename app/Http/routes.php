@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
+{
+
 
 Route::post('/signup', function () {
    $credentials = Input::only('email', 'password');
@@ -63,3 +66,5 @@ Route::get('/restricted', [
        ]);
    }
 ]);
+
+});

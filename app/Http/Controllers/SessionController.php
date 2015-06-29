@@ -54,7 +54,7 @@ class SessionController extends Controller
     public function store()
     {
         $credentials = $this->request->only('email', 'password');
-        dd($credentials);
+        //dd($credentials);
 
         if (!$token = $this->auth->attempt($credentials)) 
         {
