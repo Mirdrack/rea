@@ -52,7 +52,7 @@ Route::post('/signup', function () {
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
 
-Route::get('/restricted', [
+/*Route::get('/restricted', [
    'before' => 'jwt-auth',
    function () {
        $token = JWTAuth::getToken();
@@ -65,6 +65,20 @@ Route::get('/restricted', [
            ]
        ]);
    }
-]);
+]);*/
+
+Route::get('/restricted', function ()
+{
+  try 
+  {
+    JWTAuth::parseToken()->toUser();
+  } catch (Exception $e) 
+  {
+    return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
+  }
+
+  return ['data' => 'This has come from a dedicated API subdomain with restricted access.'];
+  
+});
 
 });
