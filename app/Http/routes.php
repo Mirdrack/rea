@@ -14,17 +14,12 @@ use Illuminate\Http\Response as HttpResponse;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
 {
 
 
 Route::post('/signup', function () {
    $credentials = Input::only('email', 'password');
-   //dd($credentials);
    try {
 
        $user = User::create($credentials);
@@ -39,46 +34,25 @@ Route::post('/signup', function () {
 });
 
 
-/*Route::post('/signin', function () {
-   $credentials = Input::only('email', 'password');
-
-   if ( ! $token = JWTAuth::attempt($credentials)) {
-       return Response::json(false, HttpResponse::HTTP_UNAUTHORIZED);
-   }
-
-   return Response::json(compact('token'));
-});*/
-
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
 
-/*Route::get('/restricted', [
-   'before' => 'jwt-auth',
-   function () {
-       $token = JWTAuth::getToken();
-       $user = JWTAuth::toUser($token);
+Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
 
-       return Response::json([
-           'data' => [
-               'email' => $user->email,
-               'registered_at' => $user->created_at->toDateTimeString()
-           ]
-       ]);
-   }
-]);*/
-
-Route::get('/restricted', function ()
+Route::get('/restricted', ['before' => 'jwt.auth', function ()
 {
   try 
   {
     JWTAuth::parseToken()->toUser();
+    $token = JWTAuth::getToken();
+       $user = JWTAuth::toUser($token);
   } catch (Exception $e) 
   {
     return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
   }
 
-  return ['data' => 'This has come from a dedicated API subdomain with restricted access.'];
+  return ['data' => $user];
   
-});
+}]);
 
 });
