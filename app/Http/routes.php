@@ -17,42 +17,24 @@ use Illuminate\Http\Response as HttpResponse;
 Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
 {
 
-
 Route::post('/signup', function () {
-   $credentials = Input::only('email', 'password');
-   try {
-
-       $user = User::create($credentials);
-   } catch (Exception $e) 
-   {
-       return Response::json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
-   }
-
-   $token = JWTAuth::fromUser($user);
-
-   return Response::json(compact('token'));
+  $credentials = Input::only('email', 'password');
+  try 
+  {
+    $user = User::create($credentials);
+  } 
+  catch (Exception $e) 
+  {
+    return Response::json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+  }
+  $token = JWTAuth::fromUser($user);
+  return Response::json(compact('token'));
 });
-
 
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
 
 Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
-
-Route::get('/restricted', ['before' => 'jwt.auth', function ()
-{
-  try 
-  {
-    JWTAuth::parseToken()->toUser();
-    $token = JWTAuth::getToken();
-       $user = JWTAuth::toUser($token);
-  } catch (Exception $e) 
-  {
-    return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
-  }
-
-  return ['data' => $user];
-  
-}]);
+Route::resource('user', 'UserController');
 
 });
