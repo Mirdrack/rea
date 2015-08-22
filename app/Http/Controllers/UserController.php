@@ -3,6 +3,7 @@
 namespace Rea\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
@@ -28,7 +29,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $users = \Rea\User::all();
+        $response = ['status' => HttpResponse::HTTP_OK, 'data' => $users, 'error' => null];
+        return response()->json($response);
     }
 
     /**
