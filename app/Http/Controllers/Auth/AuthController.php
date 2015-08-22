@@ -2,7 +2,7 @@
 
 namespace Rea\Http\Controllers\Auth;
 
-use Rea\User;
+use Rea\Entities\User;
 use Validator;
 use Rea\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;

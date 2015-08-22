@@ -7,6 +7,7 @@ use Illuminate\Http\Response as HttpResponse;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
+use Rea\Entities\User as User;
 
 use Tymon\JWTAuth\JWTAuth;
 
@@ -29,9 +30,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = \Rea\User::all();
-        $response = ['status' => HttpResponse::HTTP_OK, 'data' => $users, 'error' => null];
-        return response()->json($response);
+        $users = User::all();
+        $response = ['data' => $this->transformCollection($users), 'error' => null];
+        return response()->json($response, HttpResponse::HTTP_OK);
     }
 
     /**
@@ -111,6 +112,20 @@ class UserController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
         }
         return ['data' => $user];
+    }
+
+    public function transformCollection($collection)
+    {
+        return array_map([$this, 'transform'], $collection->toArray());
+    }
+
+    private function transform($object)
+    {
+        return [
+            'id' => $object['id'],
+            'name' => $object['name'],
+            'created_at' => date('d-m-Y @ H:i:s', strtotime($object['created_at']))
+        ];
     }
 
 }
