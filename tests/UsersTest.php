@@ -4,8 +4,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use Rea\Entities\User as User;
-
 class UsersTest extends ApiTester
 {
     use WithoutMiddleware;
@@ -16,7 +14,7 @@ class UsersTest extends ApiTester
      */
     public function test_it_fetches_users()
     {
-        $this->makeUser();
+        $this->make('User');
 
         $response = $this->getJson('/user');
 
@@ -25,14 +23,31 @@ class UsersTest extends ApiTester
 
     public function test_it_fetches_one_user()
     {
-        $this->makeUser();
+        $this->make('User');
         $response = $this->getJson('/user/1');
         $user = $response->data;
         $this->assertResponseOk();
         $this->assertObjectHasAttributes($user, 'name', 'email', 'created_at');
     }
 
-    private function makeUser($userFields = [])
+    public function test_404_if_user_not_found()
+    {
+        $this->make('User');
+        $response = $this->getJson('/user/x');
+        $this->assertResponseStatus(404);
+    }
+
+    protected function getStub()
+    {
+        return [
+            'name' => 'Clemente',
+            'email' => 'clemente.estrada.p@gmail.com',
+            'password' => 'sk8ersoul'
+
+        ];
+    }
+
+    /*private function makeUser($userFields = [])
     {
         $user = array_merge([
             'name' => 'Clemente',
@@ -42,7 +57,7 @@ class UsersTest extends ApiTester
         ], $userFields);
 
         while($this->times--) User::create($user);
-    }
+    }*/
 
     
 }

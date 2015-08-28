@@ -1,8 +1,11 @@
 <?php 
+
+use Rea\Entities\User as User;
+
 /**
 * Class with basic methods to test API
 */
-class ApiTester extends TestCase
+abstract class ApiTester extends TestCase
 {
 	const BASE_URL = 'http://rea.app';
 	protected $times = 1;
@@ -25,6 +28,25 @@ class ApiTester extends TestCase
 		return $this;
 	}
 
+	protected function make($type, $fields = [])
+	{
+		while ($this->times--) 
+		{
+			$stub = array_merge($this->getStub(), $fields);
+			/*
+				This is should be use when I resolve the recognation of the namespace problem
+				Until that we should use a long if X_X
+				$type::create($stub);
+			 */
+			if($type == 'User')
+				User::create($stub);
+			// Put here the nexts ifs
+			// :		:		:
+			// :		:		:
+			// :		:		:
+		}
+	}
+
 	protected function getJson($uri)
 	{
 		return json_decode($this->call('GET', self::BASE_URL.$uri)->getContent());
@@ -39,5 +61,10 @@ class ApiTester extends TestCase
 		{
 			$this->assertObjectHasAttribute($attribute, $object);
 		}
+	}
+
+	protected function getStub()
+	{
+		throw new BadMethodCallException('Create your own getStub method to declare your fields');
 	}
 }
