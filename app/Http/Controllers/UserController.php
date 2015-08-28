@@ -3,7 +3,10 @@
 namespace Rea\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Response as HttpResponse;
+use Validator;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
@@ -52,7 +55,17 @@ class UserController extends Controller
      */
     public function store()
     {
-        //
+        $credentials = Input::only('email', 'password');
+        try 
+        {
+            $user = User::create($credentials);
+            $response = ['data' => $this->transform($user), 'error' => null];
+            return response()->json($response, HttpResponse::HTTP_CREATED);
+        } 
+        catch (QueryException $e) 
+        {
+            return response()->json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+        }
     }
 
     /**
@@ -93,7 +106,34 @@ class UserController extends Controller
      */
     public function update($id)
     {
-        //
+        $user = User::find($id);
+        if(!$user)
+        {
+            $response = ['data' => null, 'error' => 'User not found'];
+            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+        }
+        else
+        {
+            $inptus = Input::all();
+            $rules = [
+                'name' => 'min:3',
+                'password' => 'min:6',
+                'email' => 'email|unique:users'
+            ];
+            $validator = Validator::make($inptus, $rules);
+
+            if($validator->fails())
+            {
+                $response = ['data' => null, 'error' => 'Invalid fields'];
+                return response()->json($response, HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+            }
+            else
+            {
+                $user->fill($inptus)->save();
+                $response = ['data' => ['messsage' => 'User updated'], 'error' => null ];
+                return response()->json($response, HttpResponse::HTTP_OK);
+            }
+        }
     }
 
     /**
