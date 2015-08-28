@@ -130,7 +130,7 @@ class UserController extends Controller
             else
             {
                 $user->fill($inptus)->save();
-                $response = ['data' => ['messsage' => 'User updated'], 'error' => null ];
+                $response = ['data' => ['message' => 'User updated'], 'error' => null ];
                 return response()->json($response, HttpResponse::HTTP_OK);
             }
         }
@@ -144,7 +144,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        if(!$user)
+        {
+            $response = ['data' => null, 'error' => 'User not found'];
+            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+        }
+        else
+        {
+            $user->delete();
+            $response = ['data' => ['message' => 'User delete'], 'error' => null ];
+            return response()->json($response, HttpResponse::HTTP_OK);
+        }
     }
 
     public function profile()

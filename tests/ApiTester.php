@@ -2,19 +2,22 @@
 
 use Rea\Entities\User as User;
 
+use Faker\Factory as Faker;
+
 /**
 * Class with basic methods to test API
 */
 abstract class ApiTester extends TestCase
 {
-	const BASE_URL = 'http://rea.app';
 	const ENTITIES_PATH = 'Rea\Entities\\';
+	
 	protected $times = 1;
+	protected $fake;
 
-	/*function __construct()
+	function __construct()
 	{
-		# code...
-	}*/
+		$this->fake = Faker::create();
+	}
 
 	public function setUp()
 	{
@@ -42,10 +45,12 @@ abstract class ApiTester extends TestCase
 
 	protected function getJson($uri, $method = 'GET', $params = [])
 	{
-		/*$res = $this->call($method, self::BASE_URL.$uri, $params)->getContent();
-		var_dump($res);
-		return $res;*/
-		return json_decode($this->call($method, self::BASE_URL.$uri, $params)->getContent());
+		/* Use this if you need to dump the response
+		$res = $this->call($method, $uri, $params)->getContent();
+		dd($res);
+		return $res;
+		*/
+		return json_decode($this->call($method, $uri, $params)->getContent());
 	}
 
 	protected function assertObjectHasAttributes()

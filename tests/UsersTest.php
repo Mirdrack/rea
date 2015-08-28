@@ -17,7 +17,8 @@ class UsersTest extends ApiTester
 
     public function test_it_fetches_one_user()
     {
-        $this->make('User');
+        // We already have one user on our database, result form the initial seeder
+        // So we gonna try to get that user
         $response = $this->getJson('/user/1', 'GET');
         $user = $response->data;
         $this->assertResponseOk();
@@ -26,7 +27,6 @@ class UsersTest extends ApiTester
 
     public function test_404_if_user_not_found()
     {
-        $this->make('User');
         $response = $this->getJson('/user/x');
         $this->assertResponseStatus(404);
     }
@@ -39,9 +39,11 @@ class UsersTest extends ApiTester
 
     public function test_it_fails_when_email_is_repeated()
     {
-        $this->getJson('/user', 'POST', $this->getStub());
+        $params = $this->getStub();
+        $this->getJson('/user', 'POST', $params);
         $this->assertResponseStatus(201);
-        $this->getJson('/user', 'POST', $this->getStub());
+        // We gonna send the same parameters in order to get the error
+        $this->getJson('/user', 'POST', $params);
         $this->assertResponseStatus(409);
     }
 
@@ -62,13 +64,26 @@ class UsersTest extends ApiTester
         $this->assertResponseStatus(422);
     }
 
+    public function test_it_deletes_a_user()
+    {
+        // We gonna send the same parameters in order to get the error
+        $response = $this->getJson('/user/1', 'DELETE');
+        $this->assertResponseStatus(200);
+        $this->assertObjectHasAttributes($response->data, 'message');
+    }
+
+    public function test_it_404_when_try_to_delete_a_no_existing_user()
+    {
+        $response = $this->getJson('/user/x', 'DELETE');
+        $this->assertResponseStatus(404);
+    }
+
     protected function getStub()
     {
         return [
-            'name' => 'Clemente',
-            'email' => 'clemente.estrada.p@gmail.com',
-            'password' => 'sk8ersoul'
-
+            'name' => $this->fake->name,
+            'email' => $this->fake->email,
+            'password' => $this->fake->password,
         ];
     }
 }
