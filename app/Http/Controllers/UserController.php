@@ -63,7 +63,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        if(!$user)
+        {
+            $response = ['data' => null, 'error' => 'User not found'];
+            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        $response = ['data' => $this->transform($user), 'error' => null ];
+        return response()->json($response, HttpResponse::HTTP_OK);
     }
 
     /**
@@ -124,6 +132,7 @@ class UserController extends Controller
         return [
             'id' => $object['id'],
             'name' => $object['name'],
+            'email' => $object['email'],
             'created_at' => date('d-m-Y @ H:i:s', strtotime($object['created_at']))
         ];
     }
