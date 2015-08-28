@@ -8,6 +8,7 @@ use Rea\Entities\User as User;
 abstract class ApiTester extends TestCase
 {
 	const BASE_URL = 'http://rea.app';
+	const ENTITIES_PATH = 'Rea\Entities\\';
 	protected $times = 1;
 
 	/*function __construct()
@@ -33,17 +34,9 @@ abstract class ApiTester extends TestCase
 		while ($this->times--) 
 		{
 			$stub = array_merge($this->getStub(), $fields);
-			/*
-				This is should be use when I resolve the recognation of the namespace problem
-				Until that we should use a long if X_X
-				$type::create($stub);
-			 */
-			if($type == 'User')
-				User::create($stub);
-			// Put here the nexts ifs
-			// :		:		:
-			// :		:		:
-			// :		:		:
+			$type = self::ENTITIES_PATH.$type;
+			$model = new $type;
+			$model->create();
 		}
 	}
 
