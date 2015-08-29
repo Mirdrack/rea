@@ -14,11 +14,9 @@ use Rea\Entities\User as User;
 
 use Tymon\JWTAuth\JWTAuth;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
-
     private $auth;
-
 
     public function __construct(JWTAuth $auth)
     {
@@ -79,8 +77,7 @@ class UserController extends Controller
         $user = User::find($id);
         if(!$user)
         {
-            $response = ['data' => null, 'error' => 'User not found'];
-            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+            return $this->respondNotFound('User not found');
         }
 
         $response = ['data' => $this->transform($user), 'error' => null ];
@@ -109,8 +106,7 @@ class UserController extends Controller
         $user = User::find($id);
         if(!$user)
         {
-            $response = ['data' => null, 'error' => 'User not found'];
-            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+            return $this->respondNotFound('User not found');
         }
         else
         {
@@ -147,8 +143,7 @@ class UserController extends Controller
         $user = User::find($id);
         if(!$user)
         {
-            $response = ['data' => null, 'error' => 'User not found'];
-            return response()->json($response, HttpResponse::HTTP_NOT_FOUND);
+            return $this->respondNotFound('User not found');
         }
         else
         {
