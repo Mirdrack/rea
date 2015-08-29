@@ -69,7 +69,7 @@ class UsersTest extends ApiTester
         // We gonna send the same parameters in order to get the error
         $response = $this->getJson('/user/1', 'DELETE');
         $this->assertResponseStatus(200);
-        $this->assertObjectHasAttributes($response->data, 'message');
+        $this->notSeeInDatabase('users', ['email' => 'mirdrack@gmail.com']);
     }
 
     public function test_it_404_when_try_to_delete_a_no_existing_user()

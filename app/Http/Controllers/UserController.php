@@ -33,7 +33,7 @@ class UserController extends ApiController
     {
         $users = User::all();
         $response = ['data' => $this->transformCollection($users), 'error' => null];
-        return response()->json($response, HttpResponse::HTTP_OK);
+        return $this->respondOk($response);
     }
 
     /**
@@ -61,7 +61,9 @@ class UserController extends ApiController
         } 
         catch (QueryException $e) 
         {
-            return response()->json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+            // Maybe this should be wrapped in another method
+            return $this->setStatusCode(HttpResponse::HTTP_CONFLICT)
+                        ->respondWithError('User already exists.');
         }
     }
 
@@ -78,9 +80,7 @@ class UserController extends ApiController
         {
             return $this->respondNotFound('User not found');
         }
-
-        $response = ['data' => $this->transform($user), 'error' => null ];
-        return response()->json($response, HttpResponse::HTTP_OK);
+        return $this->respondOk($this->transform($user));
     }
 
     /**
@@ -120,14 +120,12 @@ class UserController extends ApiController
             if($validator->fails())
             {
                 return $this->respondUnprocessable('Invalid fields');
-                /*$response = ['data' => null, 'error' => 'Invalid fields'];
-                return response()->json($response, HttpResponse::HTTP_UNPROCESSABLE_ENTITY);*/
             }
             else
             {
                 $user->fill($inptus)->save();
                 $response = ['data' => ['message' => 'User updated'], 'error' => null ];
-                return response()->json($response, HttpResponse::HTTP_OK);
+                return $this->respondOk($response);
             }
         }
     }
@@ -148,8 +146,7 @@ class UserController extends ApiController
         else
         {
             $user->delete();
-            $response = ['data' => ['message' => 'User delete'], 'error' => null ];
-            return response()->json($response, HttpResponse::HTTP_OK);
+            return $this->respondOk(null, 'User deleted');
         }
     }
 

@@ -27,6 +27,17 @@ class ApiController extends Controller
         return $this;
     }
 
+    public function respondOk($data, $message = 'Response Ok')
+    {
+        $response = [
+            'data' => $data,
+            'error' => null,
+            'status_code' => $this->getStatusCode(),
+            'message' => $message
+        ];
+        return $this->respond($response);
+    }
+
     public function respondNotFound($message = 'Not Found!')
     {
         return $this->setStatusCode(HttpResponse::HTTP_NOT_FOUND)
