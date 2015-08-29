@@ -33,6 +33,12 @@ class ApiController extends Controller
                     ->respondWithError($message);
     }
 
+    public function respondUnprocessable($message = 'Unprocessable Entity!')
+    {
+        return $this->setStatuscode(HttpResponse::HTTP_UNPROCESSABLE_ENTITY)
+                    ->respondWithError($message);
+    }
+
     public function respondWithError($message)
     {
         $response = [

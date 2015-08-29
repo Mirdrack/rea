@@ -120,8 +120,9 @@ class UserController extends ApiController
 
             if($validator->fails())
             {
-                $response = ['data' => null, 'error' => 'Invalid fields'];
-                return response()->json($response, HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->respondUnprocessable('Invalid fields');
+                /*$response = ['data' => null, 'error' => 'Invalid fields'];
+                return response()->json($response, HttpResponse::HTTP_UNPROCESSABLE_ENTITY);*/
             }
             else
             {

@@ -57,7 +57,7 @@ class UsersTest extends ApiTester
         $this->notSeeInDatabase('users', ['email' => 'mirdrack@gmail.com']);
     }
 
-    public function test_it_fails_when_try_to_update_with_bad_parameters()
+    public function test_it_fails_when_try_to_update_with_invalid_parameters()
     {
         // We gonna test the update with a short password
         $this->getJson('/user/1', 'PUT', ['password' => 'easy']);
