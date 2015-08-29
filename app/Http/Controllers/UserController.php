@@ -57,8 +57,7 @@ class UserController extends ApiController
         try 
         {
             $user = User::create($credentials);
-            $response = ['data' => $this->transform($user), 'error' => null];
-            return response()->json($response, HttpResponse::HTTP_CREATED);
+            return $this->respondCreated($this->transform($user), 'User Created');
         } 
         catch (QueryException $e) 
         {

@@ -21,7 +21,7 @@ class ApiController extends Controller
         return $this->statusCode;
     }
 
-    public function setStatuscode($statusCode)
+    public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
         return $this;
@@ -35,8 +35,20 @@ class ApiController extends Controller
 
     public function respondUnprocessable($message = 'Unprocessable Entity!')
     {
-        return $this->setStatuscode(HttpResponse::HTTP_UNPROCESSABLE_ENTITY)
+        return $this->setStatusCode(HttpResponse::HTTP_UNPROCESSABLE_ENTITY)
                     ->respondWithError($message);
+    }
+
+    public function respondCreated($data, $message = 'Resource Created!')
+    {
+        $response = [
+            'data' => $data,
+            'error' => null,
+            'status_code' => $this->getStatusCode(),
+            'message' => $message
+        ];
+        return $this->setStatusCode(HttpResponse::HTTP_CREATED)
+                    ->respond($response);
     }
 
     public function respondWithError($message)
