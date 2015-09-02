@@ -45,7 +45,8 @@ abstract class ApiTester extends TestCase
 
 	protected function getJson($uri, $method = 'GET', $params = [])
 	{
-		/* Use this if you need to dump the response
+		/* 
+		Use this if you need to dump the response
 		$res = $this->call($method, $uri, $params)->getContent();
 		dd($res);
 		return $res;

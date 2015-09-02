@@ -11,17 +11,20 @@ use Validator;
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\User as User;
+use Rea\Transformers\UserTransformer;
 
 use Tymon\JWTAuth\JWTAuth;
 
 class UserController extends ApiController
 {
     private $auth;
+    protected $userTransformer;
 
-    public function __construct(JWTAuth $auth)
+    public function __construct(JWTAuth $auth, UserTransformer $userTransformer)
     {
         $this->middleware('jwt.auth');
         $this->auth = $auth;
+        $this->userTransformer = $userTransformer;
     }
 
     /**
@@ -32,7 +35,7 @@ class UserController extends ApiController
     public function index()
     {
         $users = User::all();
-        $response = ['data' => $this->transformCollection($users), 'error' => null];
+        $response = ['data' => $this->userTransformer->transformCollection($users), 'error' => null];
         return $this->respondOk($response);
     }
 
@@ -57,7 +60,7 @@ class UserController extends ApiController
         try 
         {
             $user = User::create($credentials);
-            return $this->respondCreated($this->transform($user), 'User Created');
+            return $this->respondCreated($this->userTransformer->transform($user), 'User Created');
         } 
         catch (QueryException $e) 
         {
@@ -80,7 +83,7 @@ class UserController extends ApiController
         {
             return $this->respondNotFound('User not found');
         }
-        return $this->respondOk($this->transform($user));
+        return $this->respondOk($this->userTransformer->transform($user->toArray()));
     }
 
     /**
@@ -164,20 +167,4 @@ class UserController extends ApiController
         }
         return ['data' => $user];
     }
-
-    public function transformCollection($collection)
-    {
-        return array_map([$this, 'transform'], $collection->toArray());
-    }
-
-    private function transform($object)
-    {
-        return [
-            'id' => $object['id'],
-            'name' => $object['name'],
-            'email' => $object['email'],
-            'created_at' => date('d-m-Y @ H:i:s', strtotime($object['created_at']))
-        ];
-    }
-
 }
