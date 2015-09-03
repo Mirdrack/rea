@@ -41,8 +41,7 @@ class UserController extends ApiController
     public function index()
     {
         $users = User::all();
-        $response = ['data' => $this->userTransformer->transformCollection($users), 'error' => null];
-        return $this->respondOk($response);
+        return $this->respondOk($this->userTransformer->transformCollection($users));
     }
 
     /**
@@ -130,8 +129,7 @@ class UserController extends ApiController
             if($isValid)
             {
                 $user->fill(Input::all())->save();
-                $response = ['data' => ['message' => 'User updated'], 'error' => null ];
-                return $this->respondOk($response);
+                return $this->respondOk(null, 'User updated');
             }
             else
             {
