@@ -107,9 +107,7 @@ class UserController extends ApiController
     {
         $user = User::find($id);
         if(!$user)
-        {
             return $this->respondNotFound('User not found');
-        }
         else
         {
             $inptus = Input::all();
