@@ -12,6 +12,7 @@ use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\User as User;
 use Rea\Transformers\UserTransformer;
+use Rea\Validators\UpdateUserValidator;
 
 use Tymon\JWTAuth\JWTAuth;
 
@@ -19,12 +20,17 @@ class UserController extends ApiController
 {
     private $auth;
     protected $userTransformer;
+    protected $updateUserValidator;
 
-    public function __construct(JWTAuth $auth, UserTransformer $userTransformer)
+    public function __construct(
+        JWTAuth $auth, 
+        UserTransformer $userTransformer,
+        UpdateUserValidator $updateUserValidator)
     {
         $this->middleware('jwt.auth');
         $this->auth = $auth;
         $this->userTransformer = $userTransformer;
+        $this->updateUserValidator = $updateUserValidator;
     }
 
     /**
@@ -110,23 +116,26 @@ class UserController extends ApiController
             return $this->respondNotFound('User not found');
         else
         {
+            /*
             $inptus = Input::all();
-            $rules = [
+            
+             $rules = [
                 'name' => 'min:3',
                 'password' => 'min:6',
                 'email' => 'email|unique:users'
             ];
             $validator = Validator::make($inptus, $rules);
-
-            if($validator->fails())
+            */
+            $isValid = $this->updateUserValidator->with(Input::all())->passes();
+            if($isValid)
             {
-                return $this->respondUnprocessable('Invalid fields');
+                $user->fill(Input::all())->save();
+                $response = ['data' => ['message' => 'User updated'], 'error' => null ];
+                return $this->respondOk($response);
             }
             else
             {
-                $user->fill($inptus)->save();
-                $response = ['data' => ['message' => 'User updated'], 'error' => null ];
-                return $this->respondOk($response);
+                return $this->respondUnprocessable('Invalid fields');
             }
         }
     }

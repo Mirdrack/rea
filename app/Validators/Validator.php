@@ -58,7 +58,7 @@ abstract class Validator
 	 */
 	public function errors()
 	{
-		$return $this->errors;
+		return $this->errors;
 	}
 
 	/**
@@ -70,7 +70,7 @@ abstract class Validator
 		$validator = $this->validator->make($this->data, $this->rules);
 		if($validator->fails())
 		{
-			$this->errors = $this->validator->messages();
+			$this->errors = $validator->messages();
 			return false;
 		}
 		return true;
