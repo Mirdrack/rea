@@ -17,7 +17,7 @@ use Illuminate\Http\Response as HttpResponse;
 Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
 {
 
-Route::post('/signup', function () {
+/*Route::post('/signup', function () {
   $credentials = Input::only('email', 'password');
   try 
   {
@@ -25,11 +25,11 @@ Route::post('/signup', function () {
   } 
   catch (Exception $e) 
   {
-    return Response::json(['error' => 'User already exists.'], HttpResponse::HTTP_CONFLICT);
+    return Response::json(['error' => 'User already exists..'], HttpResponse::HTTP_CONFLICT);
   }
   $token = JWTAuth::fromUser($user);
   return Response::json(compact('token'));
-});
+});*/
 
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
