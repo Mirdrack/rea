@@ -14,6 +14,10 @@ use Illuminate\Http\Response as HttpResponse;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
 {
 
