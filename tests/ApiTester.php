@@ -1,7 +1,5 @@
 <?php 
 
-use Rea\Entities\User as User;
-
 use Faker\Factory as Faker;
 
 /**
@@ -39,7 +37,7 @@ abstract class ApiTester extends TestCase
 			$stub = array_merge($this->getStub(), $fields);
 			$type = self::ENTITIES_PATH.$type;
 			$model = new $type;
-			$model->create();
+			$model->create($stub);
 		}
 	}
 
@@ -47,10 +45,10 @@ abstract class ApiTester extends TestCase
 	{
 		/* 
 		Use this if you need to dump the response
+		*/
 		$res = $this->call($method, $uri, $params)->getContent();
 		dd($res);
 		return $res;
-		*/
 		return json_decode($this->call($method, $uri, $params)->getContent());
 	}
 
