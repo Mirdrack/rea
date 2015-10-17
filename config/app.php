@@ -143,6 +143,7 @@ return [
         Rea\Providers\AppServiceProvider::class,
         Rea\Providers\EventServiceProvider::class,
         Rea\Providers\RouteServiceProvider::class,
+        Rea\Providers\AuthServiceProvider::class,
 
         /*
          * Extra providers
@@ -197,6 +198,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'Gate'      => Illuminate\Support\Facades\Gate::class,
 
         'JWTAuth'    => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory'
