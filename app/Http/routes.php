@@ -42,5 +42,6 @@ Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@p
 Route::resource('user', 'UserController');
 
 Route::resource('permission', 'PermissionController');
+Route::resource('role', 'RoleController');
 
 });

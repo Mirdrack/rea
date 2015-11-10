@@ -39,6 +39,7 @@ abstract class ApiTester extends TestCase
 			$model = new $type;
 			$model->create($stub);
 		}
+		$this->times = 1;
 	}
 
 	protected function getJson($uri, $method = 'GET', $params = [])

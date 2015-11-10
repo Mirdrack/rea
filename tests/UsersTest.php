@@ -78,6 +78,22 @@ class UsersTest extends ApiTester
         $this->assertResponseStatus(404);
     }
 
+    public function test_it_add_and_delete_a_role()
+    {
+        $userClass = self::ENTITIES_PATH.'User';
+        $roleClass = self::ENTITIES_PATH.'Role';
+        $this->make('Role', ['name' => 'admin', 'label' => 'Administrator']);
+
+        $user = $userClass::where('email', 'mirdrack@gmail.com')->first();
+        $role = $roleClass::where('name', 'admin')->first();
+        
+        $user->addRole($role);
+        $this->seeInDatabase('role_user', ['user_id' => $user->id, 'role_id' => $role->id]);
+        
+        $user->deleteRole($role);
+        $this->notSeeInDatabase('role_user', ['user_id' => $user->id, 'role_id' => $role->id]);
+    }
+
     protected function getStub()
     {
         return [

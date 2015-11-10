@@ -44,4 +44,27 @@ class User extends Model implements AuthenticatableContract,
     {   
         $this->attributes['password'] = Hash::make($value);
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasRole($role)
+    {
+        if(is_string($role))
+            return $this->roles->contains('name', $role);
+        else
+            return !! $role->intersect($this->roles)->count();
+    }
+
+    public function addRole(Role $role)
+    {
+        return $this->roles()->save($role);
+    }
+
+    public function deleteRole(Role $role)
+    {
+        return $this->roles()->detach($role);
+    }
 }
