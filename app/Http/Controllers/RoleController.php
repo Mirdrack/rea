@@ -3,20 +3,24 @@
 namespace Rea\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Role;
 use Rea\Transformers\RoleTransformer;
+use Rea\Validators\UpdateRoleValidator;
 
 class RoleController extends ApiController
 {
     protected $roleTransformer;
 
     public function __construct(
-        RoleTransformer $roleTransformer)
+        RoleTransformer $roleTransformer,
+        UpdateRoleValidator $updateRoleValidator)
     {
         $this->roleTransformer = $roleTransformer;
+        $this->updateRoleValidator = $updateRoleValidator;
     }
 
     /**
@@ -87,7 +91,22 @@ class RoleController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::find($id);
+        if(!$role)
+            return $this->respondNotFound('Role not found');
+        else
+        {
+            $isValid = $this->updateRoleValidator->with(Input::all())->passes();
+            if($isValid)
+            {
+                $role->fill(Input::all())->save();
+                return $this->respondOk(null, 'Role updated');
+            }
+            else
+            {
+                return $this->respondUnprocessable('Invalid fields');
+            }
+        }
     }
 
     /**

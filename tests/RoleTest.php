@@ -66,7 +66,7 @@ class RoleTest extends ApiTester
         $newLabel = 'New Role Label';
         $this->getJson('/role/1', 'PUT', ['label' => $newLabel]);
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('permissions', ['label' => $newLabel]);
+        $this->seeInDatabase('roles', ['label' => $newLabel]);
     }
 
     protected function getStub()
