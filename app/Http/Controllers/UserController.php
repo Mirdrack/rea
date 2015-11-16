@@ -61,7 +61,7 @@ class UserController extends ApiController
      */
     public function store()
     {
-        $credentials = Input::only('email', 'password');
+        $credentials = Input::only('name', 'email', 'password');
         try 
         {
             $user = User::create($credentials);
