@@ -52,7 +52,9 @@ class RoleController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $data = Input::only('name', 'label');
+        $role = Role::create($data);
+        return $this->respondCreated($this->roleTransformer->transform($role), 'Role Created');
     }
 
     /**
