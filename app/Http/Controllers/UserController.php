@@ -45,16 +45,6 @@ class UserController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return Response
@@ -92,17 +82,6 @@ class UserController extends ApiController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
@@ -115,16 +94,6 @@ class UserController extends ApiController
             return $this->respondNotFound('User not found');
         else
         {
-            /*
-            $inptus = Input::all();
-            
-             $rules = [
-                'name' => 'min:3',
-                'password' => 'min:6',
-                'email' => 'email|unique:users'
-            ];
-            $validator = Validator::make($inptus, $rules);
-            */
             $isValid = $this->updateUserValidator->with(Input::all())->passes();
             if($isValid)
             {
@@ -148,9 +117,7 @@ class UserController extends ApiController
     {
         $user = User::find($id);
         if(!$user)
-        {
             return $this->respondNotFound('User not found');
-        }
         else
         {
             $user->delete();

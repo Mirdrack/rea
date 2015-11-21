@@ -9,17 +9,22 @@ use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Role;
 use Rea\Transformers\RoleTransformer;
+use Rea\Validators\CreateRoleValidator;
 use Rea\Validators\UpdateRoleValidator;
 
 class RoleController extends ApiController
 {
     protected $roleTransformer;
+    protected $updateRoleValidator;
+    protected $createRoleValidator;
 
     public function __construct(
         RoleTransformer $roleTransformer,
-        UpdateRoleValidator $updateRoleValidator)
+        UpdateRoleValidator $updateRoleValidator,
+        CreateRoleValidator $createRoleValidator)
     {
         $this->roleTransformer = $roleTransformer;
+        $this->createRoleValidator = $createRoleValidator;
         $this->updateRoleValidator = $updateRoleValidator;
     }
 
@@ -35,16 +40,6 @@ class RoleController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,9 +47,15 @@ class RoleController extends ApiController
      */
     public function store(Request $request)
     {
-        $data = Input::only('name', 'label');
-        $role = Role::create($data);
-        return $this->respondCreated($this->roleTransformer->transform($role), 'Role Created');
+        $data = Input::all();
+        $isValid = $this->createRoleValidator->with($data)->passes();
+        if($isValid)
+        {
+            $role = Role::create($data);
+            return $this->respondCreated($this->roleTransformer->transform($role), 'Role Created');
+        }
+        else
+            return $this->respondUnprocessable('Invalid fields');
     }
 
     /**
@@ -71,17 +72,6 @@ class RoleController extends ApiController
             return $this->respondNotFound('Role not found');
         }
         return $this->respondOk($this->roleTransformer->transform($role->toArray()));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -119,6 +109,13 @@ class RoleController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+        if(!$role)
+            return $this->respondNotFound('Role not found');
+        else
+        {
+            $role->delete();
+            return $this->respondOk(null, 'Role deleted');
+        }
     }
 }

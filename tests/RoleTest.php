@@ -24,6 +24,24 @@ class RoleTest extends ApiTester
         $this->assertObjectHasAttributes($role, 'name', 'label', 'created_at');
     }
 
+    public function test_it_creates_new_user_with_valid_paramters()
+    {
+        $data = $this->getStub();
+        $this->getJson('/role', 'POST', $data);
+        $this->assertResponseStatus(201);
+        $this->seeInDatabase('roles', ['name' => $data['name'], 'label' => $data['label']]);
+    }
+
+    public function test_it_fails_when_name_is_repeated()
+    {
+        $params = $this->getStub();
+        $this->getJson('/role', 'POST', $params);
+        $this->assertResponseStatus(201);
+        // We gonna send the same parameters in order to get the error
+        $this->getJson('/role', 'POST', $params);
+        $this->assertResponseStatus(422);
+    }
+
     public function test_it_give_permission()
     {
     	$roleClass = self::ENTITIES_PATH.'Role';

@@ -33,8 +33,10 @@ class UsersTest extends ApiTester
 
     public function test_it_creates_a_new_user_with_valid_parameters()
     {
-        $this->getJson('/user', 'POST', $this->getStub());
+        $data = $this->getStub();
+        $this->getJson('/user', 'POST', $data);
         $this->assertResponseStatus(201);
+        $this->seeInDatabase('users', ['email' => $data['email']]);
     }
 
     public function test_it_fails_when_email_is_repeated()
