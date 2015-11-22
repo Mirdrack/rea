@@ -4,6 +4,7 @@ namespace Rea\Providers;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Database\QueryException;
 
 use Rea\Entities\Permission;
 
@@ -28,13 +29,21 @@ class AuthServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
-        foreach ($this->getPermissions() as $permission) 
+        try 
         {
-            $gate->define($permission->name, function ($user) use ($permission)
+        
+            foreach ($this->getPermissions() as $permission) 
             {
-                return $user->hasRole($permission->roles);
-            });
-        }
+                $gate->define($permission->name, function ($user) use ($permission)
+                {
+                    return $user->hasRole($permission->roles);
+                });
+            }
+                    
+        } catch (QueryException $e) 
+        {
+             return false;       
+        }        
     }
 
     protected function getPermissions()

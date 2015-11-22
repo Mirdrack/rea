@@ -15,6 +15,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'Clemente',
             'email' => 'mirdrack@gmail.com',
             'password' => bcrypt('admin'),
+            'created_at' => date('Y-m-d H:i:s', time()),
+            'updated_at' => date('Y-m-d H:i:s', time()),
         ]);
     }
 }
