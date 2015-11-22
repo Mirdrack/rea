@@ -71,7 +71,7 @@ class RoleController extends ApiController
         {
             return $this->respondNotFound('Role not found');
         }
-        return $this->respondOk($this->roleTransformer->transform($role->toArray()));
+        return $this->respondOk($this->roleTransformer->transform($role));
     }
 
     /**

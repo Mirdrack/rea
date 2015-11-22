@@ -28,7 +28,7 @@ class PermissionTest extends ApiTester
     public function test_it_404_if_permission_not_found()
     {
         $this->times(3)->make('Permission');
-        $response = $this->getJson('/permission/4');
+        $response = $this->getJson('/permission/500'); // We search for a very large number
         $this->assertResponseStatus(404);
     }
 

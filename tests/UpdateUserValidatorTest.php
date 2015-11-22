@@ -2,7 +2,7 @@
 
 use Rea\Validators\StubValidator;
 
-class UpdateUserValidatorTest extends TestCase
+class UpdateUserValidatorTest extends ApiTester
 {
 
 	public function test_create_success()

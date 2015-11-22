@@ -6,7 +6,14 @@ abstract class Transformer
 
 	public function transformCollection($collection)
 	{
-	    return array_map([$this, 'transform'], $collection->toArray());
+		$transformedCollection = array();
+		foreach ($collection as $element)
+		{
+			$element = $this->transform($element);
+			$clonedElement = $element; // This needs to be done cause array_push add by reference
+			array_push($transformedCollection, $clonedElement);
+		}
+		return $transformedCollection;
 	}
 
 	public abstract function transform($object);

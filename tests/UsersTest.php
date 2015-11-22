@@ -8,12 +8,12 @@ class UsersTest extends ApiTester
 {
     use WithoutMiddleware;
     
-    /*public function test_it_fetches_users()
+    public function test_it_fetches_users()
     {
         $this->make('User');
         $response = $this->getJson('/user', 'GET');
         $this->assertResponseOk();
-    }*/
+    }
 
     public function test_it_fetches_one_user()
     {
@@ -25,7 +25,7 @@ class UsersTest extends ApiTester
         $this->assertObjectHasAttributes($user, 'name', 'email', 'created_at', 'roles');
     }
 
-    /*public function test_404_if_user_not_found()
+    public function test_404_if_user_not_found()
     {
         $response = $this->getJson('/user/x');
         $this->assertResponseStatus(404);
@@ -94,7 +94,7 @@ class UsersTest extends ApiTester
         
         $user->deleteRole($role);
         $this->notSeeInDatabase('role_user', ['user_id' => $user->id, 'role_id' => $role->id]);
-    }*/
+    }
 
     protected function getStub()
     {

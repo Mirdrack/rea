@@ -78,7 +78,7 @@ class UserController extends ApiController
         {
             return $this->respondNotFound('User not found');
         }
-        return $this->respondOk($this->userTransformer->transform($user->toArray()));
+        return $this->respondOk($this->userTransformer->transform($user));
     }
 
     /**

@@ -70,7 +70,7 @@ class PermissionController extends ApiController
         {
             return $this->respondNotFound('Permission not found');
         }
-        return $this->respondOk($this->permissionTransformer->transform($permission->toArray()));
+        return $this->respondOk($this->permissionTransformer->transform($permission));
     }
 
     /**

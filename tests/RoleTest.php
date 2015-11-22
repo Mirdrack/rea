@@ -21,7 +21,7 @@ class RoleTest extends ApiTester
         $response = $this->getJson('/role/2', 'GET');
         $role = $response->data;
         $this->assertResponseOk();
-        $this->assertObjectHasAttributes($role, 'name', 'label', 'created_at');
+        $this->assertObjectHasAttributes($role, 'name', 'label', 'created_at', 'permissions');
     }
 
     public function test_it_creates_new_user_with_valid_paramters()
