@@ -132,6 +132,9 @@ class UserController extends ApiController
             $this->auth->parseToken()->toUser();
             $token = $this->auth->getToken();
             $user = $this->auth->toUser($token);
+            // Temporal... needs to be fixed
+            $user = User::find($user->id);
+            return $this->respondOk($this->userTransformer->transform($user));
         } 
         catch (Exception $e) 
         {
