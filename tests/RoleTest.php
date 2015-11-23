@@ -47,35 +47,28 @@ class RoleTest extends ApiTester
     	$roleClass = self::ENTITIES_PATH.'Role';
     	$permissionClass = self::ENTITIES_PATH.'Permission';
     	
-    	$this->times(5)->make('Role');
-    	$this->times(3)->make('Permission');
-    	$this->make('Permission', ['name' => 'edit-user', 'label' => 'Edit User']);
-    	$this->make('Role', ['name' => 'admin', 'label' => 'Administrator']);
-    	
-    	$role = $roleClass::where('name', 'admin')->first();
-    	$permission = $permissionClass::where('name', 'edit-user')->first();
-    	$role->givePermissionTo($permission);
+    	$this->make('Permission', ['name' => 'new-permission', 'label' => 'New Permission']);
+    	$this->make('Role', ['name' => 'new-role', 'label' => 'New Role']);
+
+        $role = $roleClass::where('name', 'new-role')->first();
+        $permission = $permissionClass::where('name', 'new-permission')->first();
+
+        $url = '/role/give-permission/'.$role->id.'/'.$permission->id;
+        $response = $this->getJson($url, 'POST');
+        $this->assertResponseOk();
+        $this->assertEquals($response->message, 'Permission gived');
     	$this->seeInDatabase('permission_role', ['permission_id' => $permission->id, 'role_id' => $role->id]);
     }
 
     public function test_it_retrieve_permission()
     {
-    	$roleClass = self::ENTITIES_PATH.'Role';
-    	$permissionClass = self::ENTITIES_PATH.'Permission';
-    	
-    	$this->times(5)->make('Role');
-    	$this->times(3)->make('Permission');
-    	$this->make('Permission', ['name' => 'edit-user', 'label' => 'Edit User']);
-    	$this->make('Role', ['name' => 'admin', 'label' => 'Administrator']);
-    	
-    	$role = $roleClass::where('name', 'admin')->first();
-    	$permission = $permissionClass::where('name', 'edit-user')->first();
-    	$role->givePermissionTo($permission);
-    	$this->seeInDatabase('permission_role', ['permission_id' => $permission->id, 'role_id' => $role->id]);
-
-    	$role->retrievePermissionTo($permission);
-    	$this->notSeeInDatabase('permission_role', ['permission_id' => $permission->id, 'role_id' => $role->id]);
-
+        $roleId = 1;
+        $permissionId = 2;
+        $url = '/role/retrieve-permission/'.$roleId.'/'.$permissionId;
+        $response = $this->getJson($url, 'POST');
+        $this->assertResponseOk();
+        $this->assertEquals($response->message, 'Permission retrieved');
+        $this->notSeeInDatabase('permission_role', ['permission_id' => $permissionId, 'role_id' => $roleId]);
     }
 
     public function test_it_update_a_role_label_with_valid_parameters()

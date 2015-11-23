@@ -35,13 +35,26 @@ Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
   return Response::json(compact('token'));
 });*/
 
+// Sessions
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
 
+// Users
 Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
 Route::resource('user', 'UserController');
 
-Route::resource('permission', 'PermissionController');
+// Roles
+Route::post(
+  'role/give-permission/{role}/{permission}', 
+  array('as' => 'give-permission', 'uses' => 'RoleController@givePermission')
+);
+Route::post(
+  'role/retrieve-permission/{role}/{permission}', 
+  array('as' => 'retrieve-permission', 'uses' => 'RoleController@retrievePermission')
+);
 Route::resource('role', 'RoleController');
+
+// Permissions
+Route::resource('permission', 'PermissionController');
 
 });

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Role;
+use Rea\Entities\Permission;
 use Rea\Transformers\RoleTransformer;
 use Rea\Validators\CreateRoleValidator;
 use Rea\Validators\UpdateRoleValidator;
@@ -116,6 +117,42 @@ class RoleController extends ApiController
         {
             $role->delete();
             return $this->respondOk(null, 'Role deleted');
+        }
+    }
+
+    public function retrievePermission($role, $permission)
+    {
+        $role = Role::find($role);
+        if(!$role)
+            return $this->respondNotFound('Role not found');
+        else
+        {
+            $permission = Permission::find($permission);
+            if(!$permission)
+                return $this->respondNotFound('Permission not found');
+            else
+            {
+                $role->retrievePermissionTo($permission);
+                return $this->respondOk(null, 'Permission retrieved');
+            }
+        }
+    }
+
+    public function givePermission($role, $permission)
+    {
+        $role = Role::find($role);
+        if(!$role)
+            return $this->respondNotFound('Role not found');
+        else
+        {
+            $permission = Permission::find($permission);
+            if(!$permission)
+                return $this->respondNotFound('Permission not found');
+            else
+            {
+                $role->givePermissionTo($permission);
+                return $this->respondOk(null, 'Permission gived');
+            }
         }
     }
 }
