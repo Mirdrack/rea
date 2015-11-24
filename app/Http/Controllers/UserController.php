@@ -10,6 +10,7 @@ use Validator;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
+use Rea\Entities\Role;
 use Rea\Entities\User as User;
 use Rea\Transformers\UserTransformer;
 use Rea\Validators\UpdateUserValidator;
@@ -141,5 +142,41 @@ class UserController extends ApiController
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
         }
         return ['data' => $user];
+    }
+
+    public function giveRole($user, $role)
+    {
+        $user = User::find($user);
+        if(!$user)
+            return $this->respondNotFound('User not found');
+        else
+        {
+            $role = Role::find($role);
+            if(!$role)
+                return $this->respondNotFound('Role not found');
+            else
+            {
+                $user->giveRole($role);
+                return $this->respondOk(null, 'Role gived');
+            }
+        }
+    }
+
+    public function retrieveRole($user, $role)
+    {
+        $user = User::find($user);
+        if(!$user)
+            return $this->respondNotFound('User not found');
+        else
+        {
+            $role = Role::find($role);
+            if(!$role)
+                return $this->respondNotFound('Role not found');
+            else
+            {
+                $user->retrieveRole($role);
+                return $this->respondOk(null, 'Role retrieved');
+            }
+        }
     }
 }

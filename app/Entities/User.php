@@ -58,12 +58,12 @@ class User extends Model implements AuthenticatableContract,
             return !! $role->intersect($this->roles)->count();
     }
 
-    public function addRole(Role $role)
+    public function giveRole(Role $role)
     {
         return $this->roles()->save($role);
     }
 
-    public function deleteRole(Role $role)
+    public function retrieveRole(Role $role)
     {
         return $this->roles()->detach($role);
     }

@@ -80,20 +80,32 @@ class UsersTest extends ApiTester
         $this->assertResponseStatus(404);
     }
 
-    public function test_it_add_and_delete_a_role()
+    public function test_it_add_a_role()
     {
         $userClass = self::ENTITIES_PATH.'User';
         $roleClass = self::ENTITIES_PATH.'Role';
-        $this->make('Role', ['name' => 'admin', 'label' => 'Administrator']);
+        
+        $this->make('Role', ['name' => 'new-role', 'label' => 'New Role']);
 
         $user = $userClass::where('email', 'mirdrack@gmail.com')->first();
-        $role = $roleClass::where('name', 'admin')->first();
-        
-        $user->addRole($role);
+        $role = $roleClass::where('name', 'new-role')->first();
+
+        $url = '/user/give-role/'.$user->id.'/'.$role->id;
+        $response = $this->getJson($url, 'POST');
+        $this->assertResponseOk();
+        $this->assertEquals($response->message, 'Role gived');
         $this->seeInDatabase('role_user', ['user_id' => $user->id, 'role_id' => $role->id]);
-        
-        $user->deleteRole($role);
-        $this->notSeeInDatabase('role_user', ['user_id' => $user->id, 'role_id' => $role->id]);
+    }
+
+    public function test_it_delete_a_role()
+    {
+        $userId = 1;
+        $roleId = 1;
+        $url = '/user/retrieve-role/'.$userId.'/'.$roleId;
+        $response = $this->getJson($url, 'POST');
+        $this->assertResponseOk();
+        $this->assertEquals($response->message, 'Role retrieved');
+        $this->notSeeInDatabase('role_user', ['user_id' => $userId, 'role_id' => $roleId]);
     }
 
     protected function getStub()

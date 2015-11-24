@@ -21,25 +21,19 @@ Route::get('/', function () {
 Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
 {
 
-/*Route::post('/signup', function () {
-  $credentials = Input::only('email', 'password');
-  try 
-  {
-    $user = User::create($credentials);
-  } 
-  catch (Exception $e) 
-  {
-    return Response::json(['error' => 'User already exists..'], HttpResponse::HTTP_CONFLICT);
-  }
-  $token = JWTAuth::fromUser($user);
-  return Response::json(compact('token'));
-});*/
-
 // Sessions
 Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
 Route::resource('session', 'SessionController');
 
 // Users
+Route::post(
+  'user/give-role/{user}/{role}', 
+  array('as' => 'give-role', 'uses' => 'UserController@giveRole')
+);
+Route::post(
+  'user/retrieve-role/{user}/{role}', 
+  array('as' => 'retrieve-role', 'uses' => 'UserController@retrieveRole')
+);
 Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
 Route::resource('user', 'UserController');
 
