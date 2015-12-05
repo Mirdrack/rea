@@ -20,7 +20,7 @@ class Station extends Model
      */
 	protected $fillable = ['name'];
 
-    public function permissions()
+    public function reads()
     {
     	return $this->hasMany(Read::class);
     }

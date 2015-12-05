@@ -13,8 +13,8 @@ class StationsTest extends ApiTester
      */
     public function test_it_fetches_one_station()
     {
-        // We already have one user on our database, result form the initial seeder
-        // So we gonna try to get that user
+        // We already have one station on our database, result form the initial seeder
+        // So we gonna try to get that station
         $response = $this->getJson('/station/1', 'GET');
         $station = $response->data;
         $this->assertResponseOk();

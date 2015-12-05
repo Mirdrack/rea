@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
         $this->command->info('The Users table has been seeded!');
         $this->call('RoleUserTableSeeder');
         $this->command->info('Roles and Users tables has been joined!');
+        $this->call('StationsTableSeeder');
+        $this->command->info('Stations table has been seeded!');
+        $this->call('ReadsTableSeeder');
+        $this->command->info('Reads table has been seeded!');
 
         Model::reguard();
     }

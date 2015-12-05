@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Station;
+use Rea\Transformers\StationTransformer;
 
 class StationController extends ApiController
 {
+    protected $stationTransformer;
+
+    public function __construct(StationTransformer $stationTransformer)
+    {
+        $this->stationTransformer = $stationTransformer;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -49,11 +57,19 @@ class StationController extends ApiController
     public function show($id)
     {
         $station = Station::find($id);
+
+        /*Station::with(
+            array('reads' => function($query) use ($id)
+            {
+                return $query->where('station_id', $id);
+            })
+        )->get();*/
+
         if(!$station)
         {
             return $this->respondNotFound('Station not found');
         }
-        return $this->respondOk($this->userTransformer->transform($user));
+        return $this->respondOk($this->stationTransformer->transform($station));
     }
 
     /**
