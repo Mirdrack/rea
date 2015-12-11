@@ -20,6 +20,7 @@ class PermissionController extends ApiController
         PermissionTransformer $permissionTransformer,
         UpdatePermissionValidator $updatePermissionValidator)
     {
+        $this->middleware('jwt.auth');
         $this->permissionTransformer = $permissionTransformer;
         $this->updatePermissionValidator = $updatePermissionValidator;
     }

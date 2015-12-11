@@ -24,6 +24,7 @@ class RoleController extends ApiController
         UpdateRoleValidator $updateRoleValidator,
         CreateRoleValidator $createRoleValidator)
     {
+        $this->middleware('jwt.auth');
         $this->roleTransformer = $roleTransformer;
         $this->createRoleValidator = $createRoleValidator;
         $this->updateRoleValidator = $updateRoleValidator;
