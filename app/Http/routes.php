@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['domain' => 'rea.app', 'middleware' => 'cors'], function ()
+Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
 {
 
 // Sessions
