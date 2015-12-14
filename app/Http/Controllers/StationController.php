@@ -3,28 +3,19 @@
 namespace Rea\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
+use Rea\Entities\Station;
+use Rea\Transformers\StationTransformer;
 
-use Rea\Entities\Permission;
-use Rea\Transformers\PermissionTransformer;
-use Rea\Validators\UpdatePermissionValidator;
-
-class PermissionController extends ApiController
+class StationController extends ApiController
 {
-    protected $permissionTransformer;
-    protected $updatePermissionValidator;
+    protected $stationTransformer;
 
-    public function __construct(
-        PermissionTransformer $permissionTransformer,
-        UpdatePermissionValidator $updatePermissionValidator)
+    public function __construct(StationTransformer $stationTransformer)
     {
-        $this->middleware('jwt.auth');
-        $this->permissionTransformer = $permissionTransformer;
-        $this->updatePermissionValidator = $updatePermissionValidator;
+        $this->stationTransformer = $stationTransformer;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -33,8 +24,7 @@ class PermissionController extends ApiController
      */
     public function index()
     {
-        $permissions = Permission::all();
-        return $this->respondOk($this->permissionTransformer->transformCollection($permissions));
+        //
     }
 
     /**
@@ -66,12 +56,20 @@ class PermissionController extends ApiController
      */
     public function show($id)
     {
-        $permission = Permission::find($id);
-        if(!$permission)
+        $station = Station::find($id);
+
+        /*Station::with(
+            array('reads' => function($query) use ($id)
+            {
+                return $query->where('station_id', $id);
+            })
+        )->get();*/
+
+        if(!$station)
         {
-            return $this->respondNotFound('Permission not found');
+            return $this->respondNotFound('Station not found');
         }
-        return $this->respondOk($this->permissionTransformer->transform($permission));
+        return $this->respondOk($this->stationTransformer->transform($station));
     }
 
     /**
@@ -94,22 +92,7 @@ class PermissionController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $permission = Permission::find($id);
-        if(!$permission)
-            return $this->respondNotFound('Permission not found');
-        else
-        {
-            $isValid = $this->updatePermissionValidator->with(Input::all())->passes();
-            if($isValid)
-            {
-                $permission->fill(Input::all())->save();
-                return $this->respondOk(null, 'Permission updated');
-            }
-            else
-            {
-                return $this->respondUnprocessable('Invalid fields');
-            }
-        }
+        //
     }
 
     /**
