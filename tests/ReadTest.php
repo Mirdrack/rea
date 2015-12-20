@@ -14,7 +14,15 @@ class ReadTest extends ApiTester
         $data = $this->getStub();
         $this->getJson('/read', 'POST', $data);
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('roles', ['voltage' => $data['voltage'], 'power' => $data['power']]);
+        $this->seeInDatabase('reads', ['voltage' => $data['voltage'], 'power' => $data['power']]);
+    }
+
+    public function test_it_creates_new_read_with_invalid_paramters()
+    {
+        $data = $this->getStub();
+        $data['station_id'] = 'a'; // We send a character in order to fail when creates the read
+        $this->getJson('/read', 'POST', $data);
+        $this->assertResponseStatus(422);
     }
 
     protected function getStub()
@@ -32,6 +40,6 @@ class ReadTest extends ApiTester
 
     protected function createDecimalData($min, $max)
     {
-        return rand ($min*10, $max*10) / 10;
+        return rand($min * 10, $max * 10) / 10;
     }
 }

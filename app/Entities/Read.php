@@ -18,10 +18,5 @@ class Read extends Model
      *
      * @var array
      */
-	//protected $fillable = ['name', 'label']; // Still in definition
-
-    public function permissions()
-    {
-    	return $this->belongsTo(Station::class);
-    }
+	protected $fillable = ['station_id', 'dynamic_level', 'voltage', 'current', 'power']; 
 }
