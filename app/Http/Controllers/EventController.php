@@ -37,7 +37,7 @@ class EventController extends ApiController
         if($isValid)
         {
             $event = Event::create($data);
-            return $this->respondCreated($this->eventTransformer->transform($event), 'Event Created');
+            return $this->respondCreated($this->eventTransformer->transform($event), 'Event '.$data['alarm_id'].' Created');
         }
         else
             return $this->respondUnprocessable('Invalid fields');
