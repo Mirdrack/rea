@@ -19,5 +19,6 @@ class StationsTest extends ApiTester
         $station = $response->data;
         $this->assertResponseOk();
         $this->assertObjectHasAttributes($station, 'id', 'name', 'created_at', 'reads');
+        $this->assertCount(5, $station->reads);
     }
 }

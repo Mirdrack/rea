@@ -56,14 +56,16 @@ class StationController extends ApiController
      */
     public function show($id)
     {
-        $station = Station::find($id);
-
-        /*Station::with(
-            array('reads' => function($query) use ($id)
-            {
-                return $query->where('station_id', $id);
-            })
-        )->get();*/
+        $station = Station::with(
+            array(
+                'reads' => function($query) use ($id) 
+                {
+                    $query->where('station_id', '=', $id)->take(5);
+                }
+            )
+        )
+        ->where('id', '=', $id)
+        ->first();
 
         if(!$station)
         {

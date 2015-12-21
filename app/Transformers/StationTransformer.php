@@ -11,7 +11,7 @@ class StationTransformer extends Transformer
         return [
             'id' => $object->id,
             'name' => $object->name,
-            'created_at' => date('d-m-Y @ H:i:s', strtotime($object->created_at)),
+            'created_at' =>  $object->created_at->format('d-m-Y @ H:i:s'),
             'reads' => $object->reads->toArray(),
         ];
     }

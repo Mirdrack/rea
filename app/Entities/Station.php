@@ -22,6 +22,6 @@ class Station extends Model
 
     public function reads()
     {
-    	return $this->hasMany(Read::class)->orderBy('id', 'desc');
+    	return $this->hasMany(Read::class);
     }
 }
