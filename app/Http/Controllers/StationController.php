@@ -60,7 +60,9 @@ class StationController extends ApiController
             array(
                 'reads' => function($query) use ($id) 
                 {
-                    $query->where('station_id', '=', $id)->take(5);
+                    $query->where('station_id', '=', $id)
+                           ->orderBy('created_at','desc')
+                           ->take(5);
                 }
             )
         )
