@@ -52,6 +52,11 @@ Route::resource('role', 'RoleController');
 Route::resource('permission', 'PermissionController');
 
 // Stations
-Route::get('station/{station}',  array('uses' => 'StationController@show'));
+Route::get('station/{station}', array('uses' => 'StationController@show'));
 
+// Reads
+Route::resource('read', 'ReadController');
+
+// Events
+Route::resource('event', 'EventController');
 });

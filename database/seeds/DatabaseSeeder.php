@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Stations table has been seeded!');
         $this->call('ReadsTableSeeder');
         $this->command->info('Reads table has been seeded!');
+        $this->call('AlarmsTableSeeder');
+        $this->command->info('Alarms table has been seeded!');
 
         Model::reguard();
     }
