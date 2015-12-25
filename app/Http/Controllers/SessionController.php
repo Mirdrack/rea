@@ -13,7 +13,7 @@ use Response;
 use Illuminate\Http\Response as HttpResponse;
 
 
-class SessionController extends Controller
+class SessionController extends ApiController
 {
 
     protected $request;
@@ -25,27 +25,6 @@ class SessionController extends Controller
         $this->auth = $auth;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -54,13 +33,13 @@ class SessionController extends Controller
     public function store()
     {
         $credentials = $this->request->only('email', 'password');
-        //dd($credentials);
 
         if (!$token = $this->auth->attempt($credentials)) 
         {
-            return Response::json(false, HttpResponse::HTTP_UNAUTHORIZED);
+            return $this->setStatusCode(HttpResponse::HTTP_UNAUTHORIZED)
+                        ->respondWithError('Invalid credentials.');
         }
-        return Response::json(compact('token'));
+        return $this->respondOk(array('token' => $token));
 
         /*try {
             // attempt to verify the credentials and create a token for the user
@@ -71,17 +50,5 @@ class SessionController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }*/
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
