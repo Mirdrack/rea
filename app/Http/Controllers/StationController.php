@@ -24,7 +24,8 @@ class StationController extends ApiController
      */
     public function index()
     {
-        //
+        $stations = Station::all();
+        return $this->respondOk($this->stationTransformer->transformCollection($stations));
     }
 
     /**
