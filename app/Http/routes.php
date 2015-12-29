@@ -53,6 +53,7 @@ Route::resource('permission', 'PermissionController');
 
 // Stations
 Route::get('station/{station}', array('uses' => 'StationController@show'));
+Route::get('station', array('uses' => 'StationController@index'));
 
 // Reads
 Route::resource('read', 'ReadController');

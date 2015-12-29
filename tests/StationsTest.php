@@ -6,11 +6,16 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StationsTest extends ApiTester
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    use WithoutMiddleware;
+    
+    public function test_it_fetches_stations()
+    {
+        $this->times(5)->make('Station');
+        $response = $this->getJson('/station', 'GET');
+        $this->assertResponseOk();
+        $this->assertCount(6, $response->data); // 6 Cause we already have one
+    }
+
     public function test_it_fetches_one_station()
     {
         // We already have one station on our database, result form the initial seeder
@@ -20,5 +25,12 @@ class StationsTest extends ApiTester
         $this->assertResponseOk();
         $this->assertObjectHasAttributes($station, 'id', 'name', 'created_at', 'reads');
         $this->assertCount(5, $station->reads);
+    }
+
+    protected function getStub()
+    {
+        return [
+            'name' => $this->fake->word,
+        ];
     }
 }

@@ -24,7 +24,8 @@ class StationController extends ApiController
      */
     public function index()
     {
-        //
+        $stations = Station::all()->lists('name', 'id');
+        return $this->respondOk($this->stationTransformer->transformCollectionToList($stations));
     }
 
     /**
@@ -61,8 +62,8 @@ class StationController extends ApiController
                 'reads' => function($query) use ($id) 
                 {
                     $query->where('station_id', '=', $id)
-                           ->orderBy('created_at','desc')
-                           ->take(5);
+                           ->orderBy('id','desc')
+                           ->limit(5);
                 }
             )
         )
