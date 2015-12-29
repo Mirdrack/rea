@@ -64,6 +64,17 @@ abstract class ApiTester extends TestCase
 		}
 	}
 
+	protected function assertHasKeys()
+	{
+		$args = func_get_args();
+		$array = array_shift($args);
+
+		foreach ($args as $key)
+		{
+			$this->assertArrayHasKey($key, $array);
+		}
+	}
+
 	protected function getStub()
 	{
 		throw new BadMethodCallException('Create your own getStub method to declare your fields');

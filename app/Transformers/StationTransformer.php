@@ -1,18 +1,27 @@
 <?php 
 namespace Rea\Transformers;
 
+use Rea\Transformers\ReadTransformer;
+
 /**
 * 
 */
 class StationTransformer extends Transformer
 {
+    protected $readTransformer;
+
+    public function __construct(ReadTransformer $readTransformer)
+    {
+        $this->readTransformer = $readTransformer;
+    }
+
 	public function transform($object)
     {
         return [
-            'id' => $object->id,
+            'id' => (int) $object->id,
             'name' => $object->name,
             'created_at' =>  $object->created_at->format('d-m-Y @ H:i:s'),
-            'reads' => $object->reads->toArray(),
+            'reads' => $this->readTransformer->transformCollection($object->reads),
         ];
     }
 
