@@ -12,7 +12,7 @@ class CreateReadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reads', function (Blueprint $table) {
+        Schema::create('station_reads', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('station_id')->unsigned();
             $table->decimal('dynamic_level', 6, 2);
@@ -35,6 +35,6 @@ class CreateReadsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('reads');
+        Schema::drop('station_reads');
     }
 }
