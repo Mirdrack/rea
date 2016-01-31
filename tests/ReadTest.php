@@ -14,7 +14,7 @@ class ReadTest extends ApiTester
         $data = $this->getStub();
         $this->getJson('/read', 'POST', $data);
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('reads', ['voltage' => $data['voltage'], 'power' => $data['power']]);
+        $this->seeInDatabase('station_reads', ['voltage' => $data['voltage'], 'power' => $data['power']]);
     }
 
     public function test_it_creates_new_read_with_invalid_paramters()
