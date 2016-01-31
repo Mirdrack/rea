@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Rea\Entities\Read;
 
 class ReadsTableSeeder extends Seeder
 {
@@ -11,27 +12,29 @@ class ReadsTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($cont = 0; $cont < 15 ; $cont++) 
+        $time = time() - (60 * 60 * 24) * 31;
+        for ($cont = 0; $cont < 96 * 31 ; $cont++) 
         { 
-        	$this->createRead(1);
+        	$this->createRead(1, $time);
+            $time += 60 * 15;
         }
     }
 
-    private function createRead($station_id)
+    private function createRead($station_id, $time)
     {
-    	DB::table('reads')->insert([
+    	Read::insert([
 			'station_id' => $station_id,
 			'dynamic_level' => $this->createDecimalData(50, 250),
 			'voltage' => $this->createDecimalData(380, 440),
 			'current' => $this->createDecimalData(15, 30),
 			'power' => $this->createDecimalData(250, 300),
-            'created_at' => date('Y-m-d H:i:s', time()),
-            'updated_at' => date('Y-m-d H:i:s', time()),
+            'created_at' => date('Y-m-d H:i:s', $time),
+            'updated_at' => date('Y-m-d H:i:s', $time),
         ]);
     }
 
     private function createDecimalData($min, $max)
     {
-    	return rand ($min*10, $max*10) / 10;
+    	return rand ($min * 10, $max * 10) / 10;
     }
 }

@@ -13,7 +13,7 @@ class EventTest extends ApiTester
         $data = $this->getStub();
         $this->getJson('/event', 'POST', $data);
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('events', $data);
+        $this->seeInDatabase('station_events', $data);
     }
 
     protected function getStub($stationId = 1, $alarmTypeId = 1)

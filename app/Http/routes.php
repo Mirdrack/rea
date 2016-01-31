@@ -21,43 +21,54 @@ Route::get('/', function () {
 Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
 {
 
-// Sessions
-Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
-Route::resource('session', 'SessionController');
+    // Sessions
+    Route::post('login',  array('as' => 'login', 'uses' => 'SessionController@store'));
+    Route::resource('session', 'SessionController');
 
-// Users
-Route::post(
-  'user/give-role/{user}/{role}', 
-  array('as' => 'give-role', 'uses' => 'UserController@giveRole')
-);
-Route::post(
-  'user/retrieve-role/{user}/{role}', 
-  array('as' => 'retrieve-role', 'uses' => 'UserController@retrieveRole')
-);
-Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
-Route::resource('user', 'UserController');
+    // Users
+    Route::post(
+      'user/give-role/{user}/{role}', 
+      array('as' => 'give-role', 'uses' => 'UserController@giveRole')
+    );
+    Route::post(
+      'user/retrieve-role/{user}/{role}', 
+      array('as' => 'retrieve-role', 'uses' => 'UserController@retrieveRole')
+    );
+    Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
+    Route::resource('user', 'UserController');
 
-// Roles
-Route::post(
-  'role/give-permission/{role}/{permission}', 
-  array('as' => 'give-permission', 'uses' => 'RoleController@givePermission')
-);
-Route::post(
-  'role/retrieve-permission/{role}/{permission}', 
-  array('as' => 'retrieve-permission', 'uses' => 'RoleController@retrievePermission')
-);
-Route::resource('role', 'RoleController');
+    // Roles
+    Route::post(
+      'role/give-permission/{role}/{permission}', 
+      array('as' => 'give-permission', 'uses' => 'RoleController@givePermission')
+    );
+    Route::post(
+      'role/retrieve-permission/{role}/{permission}', 
+      array('as' => 'retrieve-permission', 'uses' => 'RoleController@retrievePermission')
+    );
+    Route::resource('role', 'RoleController');
 
-// Permissions
-Route::resource('permission', 'PermissionController');
+    // Permissions
+    Route::resource('permission', 'PermissionController');
 
-// Stations
-Route::get('station/{station}', array('uses' => 'StationController@show'));
-Route::get('station', array('uses' => 'StationController@index'));
+    // Stations
+    Route::get('station/{station}', array('uses' => 'StationController@show'));
+    Route::get('station', array('uses' => 'StationController@index'));
 
-// Reads
-Route::resource('read', 'ReadController');
+    // Reads
+    Route::resource('read', 'ReadController');
 
-// Events
-Route::resource('event', 'EventController');
+    // Events
+    Route::resource('event', 'EventController');
+
+    // Reports
+    Route::post(
+    	'chart/dynamic-level-chart', 
+    	array('as' => 'dynamic-level-chart', 'uses' => 'ChartController@dynamicLevelChart')
+    );
+    Route::post(
+      'chart/generate', 
+      array('as' => 'generate', 'uses' => 'ChartController@generate')
+    );
+
 });

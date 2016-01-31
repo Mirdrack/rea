@@ -11,7 +11,7 @@ class Read extends Model
      *
      * @var string
      */
-    protected $table = 'reads';
+    protected $table = 'station_reads';
 
 	/**
      * The attributes that are mass assignable.
