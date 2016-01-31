@@ -12,8 +12,8 @@ class ReadsTableSeeder extends Seeder
      */
     public function run()
     {
-        $time = time() - (60 * 60 * 24) * 30;
-        for ($cont = 0; $cont < 96 * 30 ; $cont++) 
+        $time = time() - (60 * 60 * 24) * 31;
+        for ($cont = 0; $cont < 96 * 31 ; $cont++) 
         { 
         	$this->createRead(1, $time);
             $time += 60 * 15;
