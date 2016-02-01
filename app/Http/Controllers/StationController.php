@@ -110,4 +110,37 @@ class StationController extends ApiController
     {
         //
     }
+
+    public function turnOn(Request $request)
+    {
+        $id = $request->input('id');
+        $station = Station::find($id);
+        if(!$station)
+            return $this->respondNotFound('Station not found.');
+        else
+        {
+            $isValid = $station->turnOn();
+            if($isValid)
+                return $this->respondOk(null, 'Station turned on.');
+            else
+                return $this->respondUnprocessable('The station is on cool down.');
+        }
+    }
+
+    public function turnOff(Request $request)
+    {
+        $id = $request->input('id');
+        $station = Station::find($id);
+        if(!$station)
+            return $this->respondNotFound('Station not found.');
+        else
+        {
+            $isValid = $station->turnOff();
+            if($isValid)
+                return $this->respondOk(null, 'Station turned off.');
+            else
+                return $this->respondWithError('Can not turn error.');
+        }
+
+    }
 }
