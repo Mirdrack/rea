@@ -54,6 +54,14 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
     // Stations
     Route::get('station/{station}', array('uses' => 'StationController@show'));
     Route::get('station', array('uses' => 'StationController@index'));
+    Route::post(
+      'station/turn-on', 
+      array('as' => 'turn-on', 'uses' => 'StationController@turnOn')
+    );
+    Route::post(
+      'station/turn-off', 
+      array('as' => 'turn-off', 'uses' => 'StationController@turnOff')
+    );
 
     // Reads
     Route::resource('read', 'ReadController');

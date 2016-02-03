@@ -27,6 +27,28 @@ class StationsTest extends ApiTester
         $this->assertCount(5, $station->reads);
     }
 
+    public function test_it_turn_on_the_station()
+    {
+        $request = array('id' => 1);
+        $response = $this->getJson('/station/turn-on', 'POST', $request);
+        $message = $response->message;
+        $this->assertResponseOk();
+        $this->assertObjectHasAttributes($response, 'message');
+        $this->assertSame($message, 'Station turned on.');
+        $this->seeInDatabase('stations', ['id' => 1, 'status' => true]);
+    }
+
+    public function test_it_turn_off_the_station()
+    {
+        $request = array('id' => 1);
+        $response = $this->getJson('/station/turn-off', 'POST', $request);
+        $this->assertResponseOk();
+        $message = $response->message;
+        $this->assertObjectHasAttributes($response, 'message');
+        $this->assertSame($message, 'Station turned off.');
+        $this->seeInDatabase('stations', ['id' => 1, 'status' => false]);
+    }
+
     protected function getStub()
     {
         return [
