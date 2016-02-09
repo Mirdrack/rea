@@ -149,4 +149,135 @@ class ReadTransformer extends Transformer
             ];
         }
     }
+
+    public function transformToTableValues($collection, $lapse, $column)
+    {
+        $transformedCollection = array();
+        foreach ($collection as $element)
+        {
+            switch ($column) 
+            {
+                case 'dynamic_level':
+                    $element = $this->transformDynamicLevelValueToRow($element, $lapse);
+                    break;
+                case 'voltage':
+                    $element = $this->transformVoltageValueToRow($element, $lapse);
+                    break;
+                case 'current':
+                    $element = $this->transformCurrentValueToRow($element, $lapse);
+                    break;
+                case 'power':
+                    $element = $this->transformPowerValueToRow($element, $lapse);
+                    break;
+                
+                default:
+                    throw new Exception("Unkown column on station_reads table", 1);
+                    
+                    break;
+            }
+            $clonedElement = $element; // This needs to be done cause array_push add by reference
+            array_push($transformedCollection, $clonedElement);
+        }
+        return $transformedCollection;
+    }
+
+    public function transformDynamicLevelValueToRow($object, $lapse)
+    {
+        if($lapse == 'day')
+        {
+            return [
+                'Hour' => (int) $object->hour,
+                'Dynamic Level' => (float) $object->dynamic_level,
+            ];
+        }
+        if($lapse == 'month')
+        {
+            return [
+                'Hour' => (int) $object->day,
+                'Dynamic Level' => (float) $object->dynamic_level,
+            ];
+        }
+        if($lapse == 'year')
+        {
+            return [
+                'Hour' => (int) $object->month,
+                'Dynamic Level' => (float) $object->dynamic_level,
+            ];
+        }
+    }
+
+    public function transformVoltageValueToRow($object, $lapse)
+    {
+        if($lapse == 'day')
+        {
+            return [
+                'Hour' => (int) $object->hour,
+                'Voltage' => (float) $object->voltage,
+            ];
+        }
+        if($lapse == 'month')
+        {
+            return [
+                'Hour' => (int) $object->day,
+                'Voltage' => (float) $object->voltage,
+            ];
+        }
+        if($lapse == 'year')
+        {
+            return [
+                'Hour' => (int) $object->month,
+                'Voltage' => (float) $object->voltage,
+            ];
+        }
+    }
+
+    public function transformCurrentValueToRow($object, $lapse)
+    {
+        if($lapse == 'day')
+        {
+            return [
+                'Hour' => (int) $object->hour,
+                'Current' => (float) $object->current,
+            ];
+        }
+        if($lapse == 'month')
+        {
+            return [
+                'Hour' => (int) $object->day,
+                'Current' => (float) $object->current,
+            ];
+        }
+        if($lapse == 'year')
+        {
+            return [
+                'Hour' => (int) $object->month,
+                'Current' => (float) $object->current,
+            ];
+        }
+    }
+
+    public function transformPowerValueToRow($object, $lapse)
+    {
+        if($lapse == 'day')
+        {
+            return [
+                'Hour' => (int) $object->hour,
+                'Power' => (float) $object->power,
+            ];
+        }
+        if($lapse == 'month')
+        {
+            return [
+                'Hour' => (int) $object->day,
+                'Power' => (float) $object->power,
+            ];
+        }
+        if($lapse == 'year')
+        {
+            return [
+                'Hour' => (int) $object->month,
+                'Power' => (float) $object->power,
+            ];
+        }
+    }
 }

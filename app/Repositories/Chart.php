@@ -100,6 +100,66 @@ class Chart {
             return null;
     }
 
+    public function getDynamicLevelValues($stationId, $start, $end, $lapse)
+    {
+        $this->setQuery($lapse, 'dynamic_level');
+        $reads = $this->exeQuery($stationId, $start, $end);
+
+        if($reads)
+        {
+            $table = array();
+            $table['values'] = $this->readTransformer->transformToTableValues($reads, $lapse, 'dynamic_level');
+            return $table;
+        }
+        else
+            return null;
+    }
+
+    public function getVoltageValues($stationId, $start, $end, $lapse)
+    {
+        $this->setQuery($lapse, 'voltage');
+        $reads = $this->exeQuery($stationId, $start, $end);
+
+        if($reads)
+        {
+            $table = array();
+            $table['values'] = $this->readTransformer->transformToTableValues($reads, $lapse, 'voltage');
+            return $table;
+        }
+        else
+            return null;
+    }
+
+    public function getCurrentValues($stationId, $start, $end, $lapse)
+    {
+        $this->setQuery($lapse, 'current');
+        $reads = $this->exeQuery($stationId, $start, $end);
+
+        if($reads)
+        {
+            $table = array();
+            $table['values'] = $this->readTransformer->transformToTableValues($reads, $lapse, 'current');
+            return $table;
+        }
+        else
+            return null;
+    }
+
+    public function getPowerValues($stationId, $start, $end, $lapse)
+    {
+        $this->setQuery($lapse, 'power');
+        $reads = $this->exeQuery($stationId, $start, $end);
+
+        if($reads)
+        {
+            $table = array();
+            $table['values'] = $this->readTransformer->transformToTableValues($reads, $lapse, 'power');
+            return $table;
+        }
+        else
+            return null;
+    }
+
     protected function setQuery($lapse, $column)
     {
     	if($lapse == 'day')

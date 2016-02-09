@@ -150,6 +150,7 @@ return [
          */
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'Barryvdh\Cors\ServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 
     ],
 
@@ -201,7 +202,8 @@ return [
         'Gate'      => Illuminate\Support\Facades\Gate::class,
 
         'JWTAuth'    => 'Tymon\JWTAuth\Facades\JWTAuth',
-        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory'
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 
     ],
 

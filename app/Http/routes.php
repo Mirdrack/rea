@@ -78,5 +78,9 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
       'chart/generate', 
       array('as' => 'generate', 'uses' => 'ChartController@generate')
     );
+    Route::get(
+      'chart/generate-xls/{stationId}/{start}/{end}/{lapse}', 
+      array('as' => 'generate', 'uses' => 'ChartController@generateXls')
+    );
 
 });
