@@ -12,7 +12,7 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('station_events', function (Blueprint $table) {
+        Schema::create('station_alarms', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('station_id')->unsigned();
             $table->integer('alarm_id')->unsigned();
@@ -37,6 +37,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('station_events');
+        Schema::drop('station_alarms');
     }
 }

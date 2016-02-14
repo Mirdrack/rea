@@ -11,7 +11,7 @@ class Event extends Model
      *
      * @var string
      */
-    protected $table = 'station_events';
+    protected $table = 'station_alarms';
 
 	/**
      * The attributes that are mass assignable.
