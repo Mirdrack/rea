@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->call('RolesTableSeeder');
         $this->command->info('The Roles table has been seeded!');
         $this->call('PermissionRoleTableSeeder');
-        $this->command->info('Permissions and Roles tables has been joined!');
+        $this->command->info('Permissions and Roles tables has been seeded!');
         $this->call('UsersTableSeeder');
         $this->command->info('The Users table has been seeded!');
         $this->call('RoleUserTableSeeder');
-        $this->command->info('Roles and Users tables has been joined!');
+        $this->command->info('Roles and Users tables has been seeded!');
         $this->call('StationsTableSeeder');
         $this->command->info('Stations table has been seeded!');
         $this->call('ReadsTableSeeder');

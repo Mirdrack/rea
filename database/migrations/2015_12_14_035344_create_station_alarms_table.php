@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventsTable extends Migration
+class CreateStationAlarmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -25,7 +25,7 @@ class CreateEventsTable extends Migration
 
             $table->foreign('alarm_id')
                   ->references('id')
-                  ->on('alarms')
+                  ->on('alarm_types')
                   ->onDelete('cascade');
         });
     }

@@ -11,12 +11,12 @@ class AlarmsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('alarms')->insert([
+        DB::table('alarm_types')->insert([
 			'label' => 'Alarma en el pozo',
 			'description' => 'Se ha disparado la Alarma del pozo',
         ]);
 
-        DB::table('alarms')->insert([
+        DB::table('alarm_types')->insert([
 			'label' => 'Fallo variador',
 			'description' => 'Fallo en variador',
         ]);
