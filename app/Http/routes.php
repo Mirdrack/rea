@@ -66,8 +66,8 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
     // Reads
     Route::resource('read', 'ReadController');
 
-    // Events
-    Route::resource('event', 'EventController');
+    // Station Events
+    Route::resource('station-event', 'StationEventController');
 
     // Station Alarms
     Route::resource('station-alarm', 'StationAlarmController');

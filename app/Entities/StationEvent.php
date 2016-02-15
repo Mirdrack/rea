@@ -4,21 +4,21 @@ namespace Rea\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class StationEvent extends Model
 {
 	/**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'station_alarms';
+    protected $table = 'station_events';
 
 	/**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-	protected $fillable = ['station_id', 'alarm_id']; 
+	protected $fillable = ['user_id', 'station_id', 'event_type_id', 'ip_address']; 
 
     public function setUpdatedAtAttribute($value)
     {
