@@ -69,6 +69,9 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
     // Events
     Route::resource('event', 'EventController');
 
+    // Station Alarms
+    Route::resource('station-alarm', 'StationAlarmController');
+
     // Reports
     Route::post(
     	'chart/dynamic-level-chart', 
