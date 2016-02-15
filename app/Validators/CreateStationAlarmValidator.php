@@ -4,11 +4,11 @@ namespace Rea\Validators;
 /**
 * 
 */
-class CreateEventValidator extends Validator
+class CreateStationAlarmValidator extends Validator
 {
 	
 	protected $rules = [
                 'station_id' => 'required|integer',
-	            'alarm_id' => 'required|integer',
+	            'alarm_type_id' => 'required|integer',
             ];
 }

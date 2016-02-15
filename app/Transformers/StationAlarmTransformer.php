@@ -1,10 +1,7 @@
 <?php 
 namespace Rea\Transformers;
 
-/**
-* 
-*/
-class EventTransformer extends Transformer
+class StationAlarmTransformer extends Transformer
 {
     public function transform($object)
     {

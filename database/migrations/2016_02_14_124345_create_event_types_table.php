@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStationsTable extends Migration
+class CreateEventTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,10 @@ class CreateStationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stations', function (Blueprint $table) {
+        Schema::create('event_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->boolean('status')->default(false);
-            $table->boolean('alarm_activated')->default(false);
-            $table->timestamps();
+            $table->string('label');
+            $table->string('description');
         });
     }
 
@@ -28,6 +26,6 @@ class CreateStationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('stations');
+        Schema::drop('event_types');
     }
 }

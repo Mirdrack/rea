@@ -12,7 +12,7 @@ class CreateAlarmsTable extends Migration
      */
     public function up()
     {
-        Schema::create('alarms', function (Blueprint $table) {
+        Schema::create('alarm_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('label');
             $table->string('description');
@@ -26,6 +26,6 @@ class CreateAlarmsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('alarms');
+        Schema::drop('alarm_types');
     }
 }

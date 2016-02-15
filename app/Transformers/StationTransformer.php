@@ -21,6 +21,7 @@ class StationTransformer extends Transformer
             'id' => (int) $object->id,
             'name' => $object->name,
             'status' => $object->status,
+            'alarm_activated' => $object->alarm_activated,
             'created_at' =>  $object->created_at->format('d-m-Y @ H:i:s'),
             'reads' => $this->readTransformer->transformCollection($object->reads),
         ];

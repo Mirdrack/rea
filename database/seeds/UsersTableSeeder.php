@@ -20,16 +20,16 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'German Meza',
-            'email' => 'mastershil@gmail.com',
+            'name' => 'Alejandro Alvarado',
+            'email' => 'alexalvaradof@gmail.com',
             'password' => bcrypt('admin'),
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time()),
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Alejandro Alvarado',
-            'email' => 'alexalvaradof@gmail.com',
+            'name' => 'Reservorio 2',
+            'email' => 'reservorio@gmega.com',
             'password' => bcrypt('admin'),
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time()),
