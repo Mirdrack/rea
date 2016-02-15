@@ -16,6 +16,7 @@ class CreateStationsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('status')->default(false);
+            $table->boolean('alarm_activated')->default(false);
             $table->timestamps();
         });
     }
