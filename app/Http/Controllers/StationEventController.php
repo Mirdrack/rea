@@ -38,16 +38,21 @@ class StationEventController extends ApiController
         if($isValid)
         {
             $stationEvent = StationEvent::create($data);
+            $station = Station::find($data['station_id']);
+            
+            if($data['event_type_id'] == 1)
+                $station->status = true;
+            
+            if($data['event_type_id'] == 2)
+                $station->status = false;
 
-            if($data['event_type_id'] == 3 || $data['event_type_id'] == 4)
-            {
-                $station = Station::find($data['station_id']);
-                if($data['event_type_id'] == 3)
-                    $station->alarm_activated = true;
-                if($data['event_type_id'] == 4)
-                    $station->alarm_activated = false;
-                $station->save();
-            }
+            if($data['event_type_id'] == 3)
+                $station->alarm_activated = true;
+            
+            if($data['event_type_id'] == 4)
+                $station->alarm_activated = false;
+            
+            $station->save();
 
             return $this->respondCreated(
                                     $this->stationEventTransformer->transform($stationEvent), 

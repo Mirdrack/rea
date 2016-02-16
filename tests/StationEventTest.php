@@ -8,7 +8,7 @@ class StationEventTest extends ApiTester
 {
     use WithoutMiddleware;
 
-    public function test_it_creates_new_station_event_with_valid_paramters()
+    /*public function test_it_creates_new_station_event_with_valid_paramters()
     {
         $data = $this->getStub();
         $this->getJson('/station-event', 'POST', $data);
@@ -23,6 +23,24 @@ class StationEventTest extends ApiTester
         $this->assertResponseStatus(201);
         $this->seeInDatabase('station_events', $data);
         $this->seeInDatabase('stations', ['id' => 1, 'alarm_activated' => true ]);
+    }*/
+
+    public function test_it_creates_new_turn_on_station_event_with_valid_paramters()
+    {
+        $data = $this->getStub(1, 1); // alarm_type = 3 | Alarm activated
+        $this->getJson('/station-event', 'POST', $data);
+        $this->assertResponseStatus(201);
+        $this->seeInDatabase('station_events', $data);
+        $this->seeInDatabase('stations', ['id' => 1, 'status' => true ]);
+    }
+
+    public function test_it_creates_new_turn_off_station_event_with_valid_paramters()
+    {
+        $data = $this->getStub(1, 2); // alarm_type = 3 | Alarm activated
+        $this->getJson('/station-event', 'POST', $data);
+        $this->assertResponseStatus(201);
+        $this->seeInDatabase('station_events', $data);
+        $this->seeInDatabase('stations', ['id' => 1, 'status' => false ]);
     }
 
     protected function getStub($stationId = 1, $eventTypeId = 1)
