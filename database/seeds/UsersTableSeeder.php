@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => 'Reservorio 2',
-            'email' => 'reservorio@gmega.com',
+            'email' => 'reservorio@gfmega.com',
             'password' => bcrypt('admin'),
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time()),
