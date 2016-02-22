@@ -24,4 +24,14 @@ class StationAlarm extends Model
     {
         // Do nothing because we don't need the updated_at attribute.
     }
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
+
+    public function alarm_type()
+    {
+        return $this->belongsTo(AlarmType::class);
+    }
 }

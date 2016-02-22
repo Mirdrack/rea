@@ -14,6 +14,8 @@ use Rea\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
+    const PAGE_LIMIT = 20;
+
     protected $statusCode = 200;
 
     public function getStatusCode()
@@ -35,6 +37,28 @@ class ApiController extends Controller
             'status_code' => $this->getStatusCode(),
             'message' => $message
         ];
+        return $this->respond($response);
+    }
+
+    public function respondOkWithPagination($collection, $data, $message = 'Response Ok')
+    {
+        $paginator = [
+            'paginator' => [
+                'total_count' => $collection->total(),
+                'total_pages' => ceil($collection->total() / $collection->perPage()),
+                'current_page' => $collection->currentPage(),
+                'limit' => $collection->perPage(),
+            ]
+        ];
+        
+        $data = array_merge($data, $paginator);
+
+        $response = [
+            'data' => $data,
+            'error' => null,
+            'status_code' => $this->getStatusCode(),
+            'message' => $message,
+        ]; 
         return $this->respond($response);
     }
 
