@@ -24,6 +24,20 @@ class StationAlarmController extends ApiController
         $this->createStationAlarmValidator = $createStationAlarmValidator;
     }
 
+    public function index()
+    {
+        $limit = Input::get('limit') ?: self::PAGE_LIMIT;
+        $stationAlarms = StationAlarm::paginate($limit);
+
+        if($stationAlarms)
+        {
+            $data = array('station_alarms' => $this->stationAlarmTransformer->transformCollection($stationAlarms));
+            return $this->respondOkWithPagination($stationAlarms, $data);
+        }
+        else
+            $this->respondOk(null, 'No data available');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

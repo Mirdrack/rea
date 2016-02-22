@@ -16,6 +16,14 @@ class StationAlarmTest extends ApiTester
         $this->seeInDatabase('station_alarms', $data);
     }
 
+    public function test_it_fetch_a_page_of_alarms_with_valid_parameters()
+    {
+        $response = $this->getJson('/station-alarm', 'GET');
+        $this->assertResponseStatus(200);
+        $this->assertResponseOk();
+        $this->assertObjectHasAttributes($response->data, 'station_alarms', 'paginator');
+    }
+
     protected function getStub($stationId = 1, $alarmTypeId = 1)
     {
         return [
