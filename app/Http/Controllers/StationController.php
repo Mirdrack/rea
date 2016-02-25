@@ -24,8 +24,9 @@ class StationController extends ApiController
      */
     public function index()
     {
-        $stations = Station::all()->lists('name', 'id');
-        return $this->respondOk($this->stationTransformer->transformCollectionToList($stations));
+        $stations = Station::all();
+        $this->stationTransformer->transformCollection($stations);
+        return $this->respondOk($this->stationTransformer->transformCollection($stations));
     }
 
     /**
@@ -141,6 +142,11 @@ class StationController extends ApiController
             else
                 return $this->respondWithError('Can not turn error.');
         }
+    }
 
+    public function basicList()
+    {
+        $stations = Station::all()->lists('name', 'id');
+        return $this->respondOk($this->stationTransformer->transformCollectionToList($stations));
     }
 }

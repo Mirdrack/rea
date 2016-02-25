@@ -16,6 +16,14 @@ class StationsTest extends ApiTester
         $this->assertCount(6, $response->data); // 6 Cause we already have one
     }
 
+    public function test_it_fetches_stations_list()
+    {
+        $this->times(5)->make('Station');
+        $response = $this->getJson('/station/basic-list', 'GET');
+        $this->assertResponseOk();
+        $this->assertCount(6, $response->data); // 6 Cause we already have one
+    }
+
     public function test_it_fetches_one_station()
     {
         // We already have one station on our database, result form the initial seeder

@@ -52,6 +52,7 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
     Route::resource('permission', 'PermissionController');
 
     // Stations
+    Route::get('station/basic-list', array('uses' => 'StationController@basicList'));
     Route::get('station/{station}', array('uses' => 'StationController@show'));
     Route::get('station', array('uses' => 'StationController@index'));
     Route::post(
