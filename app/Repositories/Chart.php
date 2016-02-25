@@ -174,18 +174,18 @@ class Chart {
     	if($lapse == 'month')
     	{
     		if(env('APP_ENV') == 'testing')
-            	$rawSelect = DB::raw('strftime("%d", created_at) AS day, AVG(dynamic_level) AS dynamic_level'); // Test env
+            	$rawSelect = DB::raw('strftime("%d", created_at) AS day, AVG('.$column.') AS '.$column.' '); // Test env
 	        else
-	            $rawSelect = DB::raw('DAY(created_at) AS day, AVG(dynamic_level) AS dynamic_level'); // Others env
+	            $rawSelect = DB::raw('DAY(created_at) AS day, AVG('.$column.') AS '.$column.' '); // Others env
 
 	        $groupBy = 'day';
     	}
     	if($lapse == 'year')
     	{
     		if(env('APP_ENV') == 'testing')
-            	$rawSelect = DB::raw('strftime("%m", created_at) AS month, AVG(dynamic_level) AS dynamic_level'); // Test env
+            	$rawSelect = DB::raw('strftime("%m", created_at) AS month, AVG('.$column.') AS '.$column.' '); // Test env
 	        else
-	            $rawSelect = DB::raw('MONTH(created_at) AS month, AVG(dynamic_level) AS dynamic_level'); // Others env
+	            $rawSelect = DB::raw('MONTH(created_at) AS month, AVG('.$column.') AS '.$column.' '); // Others env
 
 	        $groupBy = 'month';
     	}
