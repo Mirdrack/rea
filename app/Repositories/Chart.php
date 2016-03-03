@@ -165,9 +165,9 @@ class Chart {
     	if($lapse == 'day')
     	{
     		if(env('APP_ENV') == 'testing')
-            	$rawSelect = DB::raw('strftime("%H", created_at) AS hour, AVG('.$column.') AS '.$column.' '); // Test env
+            	$rawSelect = DB::raw('created_at AS hour, '.$column.' AS '.$column.' '); // Test env
 	        else
-	            $rawSelect = DB::raw('HOUR(created_at) AS hour, AVG('.$column.') AS '.$column.' '); // Others env
+	            $rawSelect = DB::raw('created_at AS hour, '.$column.' AS '.$column.' '); // Others env
 
 	        $groupBy = 'hour';
     	}
