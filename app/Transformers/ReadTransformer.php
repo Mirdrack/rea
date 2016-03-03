@@ -55,7 +55,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'x' => (int) $object->hour,
+                'x' => (string) $object->hour,
                 'y' => (float) $object->dynamic_level,
             ];
         }
@@ -80,7 +80,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'x' => (int) $object->hour,
+                'x' => (string) $object->hour,
                 'y' => (float) $object->voltage,
             ];
         }
@@ -105,7 +105,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'x' => (int) $object->hour,
+                'x' => (string) $object->hour,
                 'y' => (float) $object->current,
             ];
         }
@@ -130,7 +130,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'x' => (int) $object->hour,
+                'x' => (string) $object->hour,
                 'y' => (float) $object->power,
             ];
         }
@@ -186,7 +186,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'Hour' => (int) $object->hour,
+                'Hour' => (string) $object->hour,
                 'Dynamic Level' => (float) $object->dynamic_level,
             ];
         }
@@ -211,7 +211,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'Hour' => (int) $object->hour,
+                'Hour' => (string) $object->hour,
                 'Voltage' => (float) $object->voltage,
             ];
         }
@@ -236,7 +236,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'Hour' => (int) $object->hour,
+                'Hour' => (string) $object->hour,
                 'Current' => (float) $object->current,
             ];
         }
@@ -261,7 +261,7 @@ class ReadTransformer extends Transformer
         if($lapse == 'day')
         {
             return [
-                'Hour' => (int) $object->hour,
+                'Hour' => (string) $object->hour,
                 'Power' => (float) $object->power,
             ];
         }
