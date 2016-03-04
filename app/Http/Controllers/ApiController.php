@@ -14,7 +14,7 @@ use Rea\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
-    const PAGE_LIMIT = 20;
+    const PAGE_LIMIT = 10;
 
     protected $statusCode = 200;
 
