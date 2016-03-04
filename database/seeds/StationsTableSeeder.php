@@ -12,7 +12,7 @@ class StationsTableSeeder extends Seeder
     public function run()
     {
         DB::table('stations')->insert([
-            'name' => 'Stations 1',
+            'name' => 'Station 1',
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time()),
         ]);

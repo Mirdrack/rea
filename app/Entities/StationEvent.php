@@ -24,4 +24,19 @@ class StationEvent extends Model
     {
         // Do nothing because we don't need the updated_at attribute.
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
+
+    public function event_type()
+    {
+        return $this->belongsTo(EventType::class);
+    }
 }

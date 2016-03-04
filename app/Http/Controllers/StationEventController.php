@@ -25,6 +25,20 @@ class StationEventController extends ApiController
         $this->createStationEventValidator = $createStationEventValidator;
     }
 
+    public function index()
+    {
+        $limit = Input::get('limit') ?: self::PAGE_LIMIT;
+        $stationEvents = StationEvent::paginate($limit);
+
+        if($stationEvents)
+        {
+            $data = array('station_events' => $this->stationEventTransformer->transformCollection($stationEvents));
+            return $this->respondOkWithPagination($stationEvents, $data);
+        }
+        else
+            $this->respondOk(null, 'No data available');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
