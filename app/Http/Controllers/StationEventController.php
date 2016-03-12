@@ -9,6 +9,7 @@ use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Station;
 use Rea\Entities\StationEvent;
+use Rea\Entities\StationSensor;
 use Rea\Transformers\StationEventTransformer;
 use Rea\Validators\CreateStationEventValidator;
 
@@ -55,18 +56,34 @@ class StationEventController extends ApiController
             $station = Station::find($data['station_id']);
             
             if($data['event_type_id'] == 1)
+            {
                 $station->status = true;
+                $station->save();
+            }
             
             if($data['event_type_id'] == 2)
+            {
                 $station->status = false;
+                $station->save();
+            }
 
             if($data['event_type_id'] == 3)
-                $station->alarm_activated = true;
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Maya')
+                                ->first();
+                $sensor->alarm_activated = true;
+                $sensor->save();
+            }
             
             if($data['event_type_id'] == 4)
-                $station->alarm_activated = false;
-            
-            $station->save();
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Maya')
+                                ->first();
+                $sensor->alarm_activated = false;
+                $sensor->save();
+            }
 
             return $this->respondCreated(
                                     $this->stationEventTransformer->transform($stationEvent), 
