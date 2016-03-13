@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Alarm Types table has been seeded!');
         $this->call('EventTypesTableSeeder');
         $this->command->info('Event Types table has been seeded!');
+        $this->call('SensorsTableSeeder');
+        $this->command->info('Station Sensors table has been seeded!');
 
         Model::reguard();
     }
