@@ -2,6 +2,7 @@
 
 namespace Rea\Http\Controllers;
 
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -80,6 +81,7 @@ class StationEventController extends ApiController
                                 ->where('name', 'Maya')
                                 ->first();
                 $sensor->alarm_activated = true;
+                $sensor->alarm_cooldown = 0;
                 $sensor->save();
             }
             
@@ -89,6 +91,7 @@ class StationEventController extends ApiController
                                 ->where('name', 'Maya')
                                 ->first();
                 $sensor->alarm_activated = false;
+                $sensor->alarm_cooldown = $data['alarm_cooldown'];
                 $sensor->save();
             }
 
