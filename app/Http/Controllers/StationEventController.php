@@ -64,8 +64,8 @@ class StationEventController extends ApiController
                 // Mailing
                 Mail::send('emails.turn-on', ['station' => $station], function ($m) use ($station) 
                 {
-                    $m->from('hello@app.com', 'System Mail');
-                    $m->to('soporte@aitanastudios.com')->subject('Turn On!');
+                    $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
+                    $m->to('soporte@aitanastudios.com')->subject('Encendido de pozo!');
                 });
             }
             

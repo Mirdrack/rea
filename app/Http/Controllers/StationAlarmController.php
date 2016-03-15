@@ -2,12 +2,14 @@
 
 namespace Rea\Http\Controllers;
 
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\StationAlarm;
+use Rea\Entities\StationSensor;
 use Rea\Transformers\StationAlarmTransformer;
 use Rea\Validators\CreateStationAlarmValidator;
 
@@ -51,6 +53,41 @@ class StationAlarmController extends ApiController
         if($isValid)
         {
             $stationAlarm = StationAlarm::create($data);
+
+            if($data['alarm_type_id'] == 1)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Maya')
+                                ->first();
+            }
+            if($data['alarm_type_id'] == 2)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Electra')
+                                ->first();
+            }
+            if($data['alarm_type_id'] == 3)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Hestia')
+                                ->first();
+            }
+            if($data['alarm_type_id'] == 4)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Aretusa')
+                                ->first();
+            }
+
+            // dd($sensor->notification_emails);
+            Mail::send('emails.alarm', ['sensor' => $sensor], function ($m) use ($sensor) 
+            {
+                $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
+                foreach (explode(',', $sensor->notification_emails) as $email)
+                {
+                    $m->to(trim($email))->subject($sensor->notification_subject);
+                }
+            });
             return $this->respondCreated(
                                     $this->stationAlarmTransformer->transform($stationAlarm), 
                                     'Alarm '.$data['alarm_type_id'].' Created'
