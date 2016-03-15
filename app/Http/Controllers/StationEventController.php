@@ -95,6 +95,7 @@ class StationEventController extends ApiController
                 $sensor->alarm_cooldown = $data['alarm_cooldown'];
                 $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
                 $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
             }
 
             if($data['event_type_id'] == 5)
@@ -117,6 +118,7 @@ class StationEventController extends ApiController
                 $sensor->alarm_cooldown = $data['alarm_cooldown'];
                 $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
                 $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
             }
 
             if($data['event_type_id'] == 7)
@@ -139,6 +141,7 @@ class StationEventController extends ApiController
                 $sensor->alarm_cooldown = $data['alarm_cooldown'];
                 $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
                 $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
             }
 
             if($data['event_type_id'] == 9)
@@ -161,10 +164,12 @@ class StationEventController extends ApiController
                 $sensor->alarm_cooldown = $data['alarm_cooldown'];
                 $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
                 $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
             }
 
+            $responseData['station_event'] = $this->stationEventTransformer->transform($stationEvent);
             return $this->respondCreated(
-                                    $this->stationEventTransformer->transform($stationEvent), 
+                                    $responseData, 
                                     'Station Event '.$data['event_type_id'].' Created'
                                     );
         }
