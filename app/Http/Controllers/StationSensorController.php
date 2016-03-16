@@ -9,14 +9,20 @@ use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\StationSensor;
 use Rea\Transformers\StationSensorTransformer;
+use Rea\Validators\UpdateStationSensorValidator; 
 
 class StationSensorController extends ApiController
 {
     protected $stationSensorTransformer;
+    protected $updateStationSensorValidator;
 
-    public function __construct(StationSensorTransformer $stationSensorTransformer)
+    public function __construct(
+        StationSensorTransformer $stationSensorTransformer,
+        UpdateStationSensorValidator $updateStationSensorValidator 
+        )
     {
         $this->stationSensorTransformer = $stationSensorTransformer;
+        $this->updateStationSensorValidator = $updateStationSensorValidator;
     }
 
     public function index()
@@ -37,5 +43,26 @@ class StationSensorController extends ApiController
             return $this->respondNotFound('Station Sensor not found');
         }
         return $this->respondOk($this->stationSensorTransformer->transform($stationSensor));
+    }
+
+    public function update($id)
+    {
+        $stationSensor = StationSensor::find($id);
+
+        if(!$stationSensor)
+            return $this->respondNotFound('Station Sensor not found');
+        else
+        {
+            $isValid = $this->updateStationSensorValidator->with(Input::all())->passes();
+            if($isValid)
+            {
+                $stationSensor->fill(Input::all())->save();
+                return $this->respondOk(null, 'Station Sensor updated');
+            }
+            else
+            {
+                return $this->respondUnprocessable('Invalid fields');
+            }
+        }
     }
 }
