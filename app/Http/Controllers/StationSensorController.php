@@ -28,4 +28,14 @@ class StationSensorController extends ApiController
         else
             $this->respondOk(null, 'No data available');
     }
+
+    public function show($id)
+    {
+        $stationSensor = StationSensor::find($id);
+        if(!$stationSensor)
+        {
+            return $this->respondNotFound('Station Sensor not found');
+        }
+        return $this->respondOk($this->stationSensorTransformer->transform($stationSensor));
+    }
 }
