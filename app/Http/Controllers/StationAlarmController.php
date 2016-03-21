@@ -88,6 +88,17 @@ class StationAlarmController extends ApiController
                     $m->to(trim($email))->subject($sensor->notification_subject);
                 }
             });
+
+            try {
+
+                $whatsappCmd = 'yowsup-cli demos --send 5213333688082 "'.$sensor->notification_text.'" --config /home/ubuntu/python/yowsup/config.txt -M 2>&1';
+                $res = shell_exec($whatsappCmd);
+
+                } catch (Exception $e) {
+
+                $this->respondWithError('Failed to send whatsapp notification.');
+            }
+
             return $this->respondCreated(
                                     $this->stationAlarmTransformer->transform($stationAlarm), 
                                     'Alarm '.$data['alarm_type_id'].' Created'
