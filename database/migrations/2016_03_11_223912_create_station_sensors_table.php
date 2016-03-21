@@ -20,6 +20,7 @@ class CreateStationSensorsTable extends Migration
             $table->boolean('alarm_activated')->default(false);
             $table->integer('alarm_cooldown')->unsigned();
             $table->dateTime('alarm_turned_off_at')->nullable();
+            $table->text('notification_phones');
             $table->text('notification_emails');
             $table->text('notification_subject');
             $table->text('notification_text');

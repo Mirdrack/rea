@@ -89,15 +89,24 @@ class StationAlarmController extends ApiController
                 }
             });
 
-            try {
+            // Sending WhatsApp Messages
+            foreach (explode(',', $sensor->notification_phones) as $phone)
+            {
+                try {
 
-                $whatsappCmd = 'yowsup-cli demos --send 5213333688082 "'.$sensor->notification_text.'" --config /home/ubuntu/python/yowsup/config.txt -M 2>&1';
-                $res = shell_exec($whatsappCmd);
+                    $whatsappCmd  = 'yowsup-cli demos ';
+                    $whatsappCmd .= '--send 521'.$phone.' '; 
+                    $whatsappCmd .= '"'.$sensor->notification_text.'"  ';
+                    $whatsappCmd .= '--config /home/ubuntu/python/yowsup/config.txt -M 2>&1';
+                    
+                    $shellResult = shell_exec($whatsappCmd);
 
-                } catch (Exception $e) {
+                    } catch (Exception $e) {
 
-                $this->respondWithError('Failed to send whatsapp notification.');
+                    $this->respondWithError('Failed to send whatsapp notification.');
+                }
             }
+
 
             return $this->respondCreated(
                                     $this->stationAlarmTransformer->transform($stationAlarm), 

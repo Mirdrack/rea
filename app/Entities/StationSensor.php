@@ -23,6 +23,7 @@ class StationSensor extends Model
 	protected $fillable = [
         'station_id',
         'label',
+        'notification_phones',
         'notification_emails',
         'notification_subject',
         'notification_text'
