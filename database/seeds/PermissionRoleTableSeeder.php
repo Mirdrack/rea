@@ -11,7 +11,7 @@ class PermissionRoleTableSeeder extends Seeder
      */
     public function run()
     {
-    	// Id 1 == admin role
+    	/*// Id 1 == admin role
         $this->createPermissionRole(1, 1);  // list-users
         $this->createPermissionRole(2, 1);  // create-users
         $this->createPermissionRole(3, 1);  // edit-users
@@ -25,7 +25,15 @@ class PermissionRoleTableSeeder extends Seeder
         $this->createPermissionRole(10, 1); // delete-roles
         
         $this->createPermissionRole(11, 1); // list-permissions
-        $this->createPermissionRole(12, 1); // view-permissions
+        $this->createPermissionRole(12, 1); // view-permissions*/
+
+        // Id 1 == admin role
+        $this->createPermissionRole(1, 1);  // users
+        $this->createPermissionRole(2, 1);  // groups
+        $this->createPermissionRole(3, 1);  // view-stations
+        $this->createPermissionRole(4, 1);  // alarms-stations
+        $this->createPermissionRole(5, 1);  // events-stations
+        $this->createPermissionRole(6, 1);  // station-sensors
     }
 
     private function createPermissionRole($permissionId, $roleId)

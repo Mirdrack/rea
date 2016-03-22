@@ -67,4 +67,14 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->roles()->detach($role);
     }
+
+    public function checkPermissions($permissions)
+    {
+        foreach ($permissions as $permission)
+        {
+            $can = $this->can('users');
+            $userPermissions[$permission] = $this->can($permission); 
+        }
+        return $userPermissions;
+    }
 }

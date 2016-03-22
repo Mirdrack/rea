@@ -79,7 +79,6 @@ class StationAlarmController extends ApiController
                                 ->first();
             }
 
-            // dd($sensor->notification_emails);
             Mail::send('emails.alarm', ['sensor' => $sensor], function ($m) use ($sensor) 
             {
                 $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
@@ -95,7 +94,7 @@ class StationAlarmController extends ApiController
                 try {
 
                     $whatsappCmd  = 'yowsup-cli demos ';
-                    $whatsappCmd .= '--send 521'.$phone.' '; 
+                    $whatsappCmd .= '--send 521'.trim($phone).' '; 
                     $whatsappCmd .= '"'.$sensor->notification_text.'"  ';
                     $whatsappCmd .= '--config /home/ubuntu/python/yowsup/config.txt -M 2>&1';
                     
