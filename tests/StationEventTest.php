@@ -24,13 +24,38 @@ class StationEventTest extends ApiTester
         $this->seeInDatabase('station_events', $data);
     }*/
 
+    public function test_it_creates_new_turn_off_alarm_event_with_valid_paramters()
+    {
+        $alarmCooldown = 100;
+        $data = $this->getStub(1, 4); // alarm_type = 4 | Alarm deactivated (Puerta Pozo)
+        $data['alarm_cooldown'] = $alarmCooldown;
+        $response = $this->getJson('/station-event', 'POST', $data);
+        $this->assertResponseStatus(201);
+        unset($data['alarm_cooldown']);
+        $this->seeInDatabase('station_events', $data);
+        $sensorRecord = [
+            'id' => 1, 
+            'alarm_activated' => false, 
+            'alarm_cooldown' => $alarmCooldown,
+        ];
+        $this->seeInDatabase('station_sensors', $sensorRecord);
+        $this->assertObjectHasAttributes($response->data, 'station_event', 'station_sensor');
+    }
+
     public function test_it_creates_new_turn_on_alarm_event_with_valid_paramters()
     {
         $data = $this->getStub(1, 3); // alarm_type = 3 | Alarm activated (Puerta Pozo)
-        $this->getJson('/station-event', 'POST', $data);
+        $response = $this->getJson('/station-event', 'POST', $data);
         $this->assertResponseStatus(201);
         $this->seeInDatabase('station_events', $data);
-        $this->seeInDatabase('station_sensors', ['id' => 1, 'alarm_activated' => true ]);
+        $sensorRecord = [
+            'id' => 1,
+            'alarm_activated' => true,
+            'alarm_cooldown' => 0,
+            'alarm_turned_off_at' => null,
+        ];
+        $this->seeInDatabase('station_sensors', $sensorRecord);
+        $this->assertObjectHasAttributes($response->data, 'station_event');
     }
 
     public function test_it_creates_new_turn_on_station_event_with_valid_paramters()

@@ -20,7 +20,14 @@ class StationSensor extends Model
      *
      * @var array
      */
-	protected $fillable = ['station_id', 'label']; 
+	protected $fillable = [
+        'station_id',
+        'label',
+        'notification_phones',
+        'notification_emails',
+        'notification_subject',
+        'notification_text'
+    ]; 
 
     public function station()
     {

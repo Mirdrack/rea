@@ -31,7 +31,6 @@ class AuthServiceProvider extends ServiceProvider
 
         try 
         {
-        
             foreach ($this->getPermissions() as $permission) 
             {
                 $gate->define($permission->name, function ($user) use ($permission)

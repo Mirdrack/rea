@@ -179,4 +179,23 @@ class UserController extends ApiController
             }
         }
     }
+
+    public function permissions()
+    {
+        $data = Input::only('permissions');
+        
+        // We get the logged user
+        $this->auth->parseToken()->toUser();
+        $token = $this->auth->getToken();
+        $user = $this->auth->toUser($token);
+
+        // $user = User::find(1);
+        if(!$user)
+            return $this->respondNotFound('User not found');
+        else
+        {
+            $permissions = $user->checkPermissions($data['permissions']);
+            return $this->respondOk($permissions);
+        }
+    }
 }

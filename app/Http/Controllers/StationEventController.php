@@ -64,8 +64,8 @@ class StationEventController extends ApiController
                 // Mailing
                 Mail::send('emails.turn-on', ['station' => $station], function ($m) use ($station) 
                 {
-                    $m->from('hello@app.com', 'System Mail');
-                    $m->to('soporte@aitanastudios.com')->subject('Turn On!');
+                    $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
+                    $m->to('soporte@aitanastudios.com')->subject('Encendido de pozo!');
                 });
             }
             
@@ -82,6 +82,7 @@ class StationEventController extends ApiController
                                 ->first();
                 $sensor->alarm_activated = true;
                 $sensor->alarm_cooldown = 0;
+                $sensor->alarm_turned_off_at = null;
                 $sensor->save();
             }
             
@@ -92,11 +93,83 @@ class StationEventController extends ApiController
                                 ->first();
                 $sensor->alarm_activated = false;
                 $sensor->alarm_cooldown = $data['alarm_cooldown'];
+                $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
                 $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
             }
 
+            if($data['event_type_id'] == 5)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Electra')
+                                ->first();
+                $sensor->alarm_activated = true;
+                $sensor->alarm_cooldown = 0;
+                $sensor->alarm_turned_off_at = null;
+                $sensor->save();
+            }
+            
+            if($data['event_type_id'] == 6)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Electra')
+                                ->first();
+                $sensor->alarm_activated = false;
+                $sensor->alarm_cooldown = $data['alarm_cooldown'];
+                $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
+                $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
+            }
+
+            if($data['event_type_id'] == 7)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Hestia')
+                                ->first();
+                $sensor->alarm_activated = true;
+                $sensor->alarm_cooldown = 0;
+                $sensor->alarm_turned_off_at = null;
+                $sensor->save();
+            }
+            
+            if($data['event_type_id'] == 8)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Hestia')
+                                ->first();
+                $sensor->alarm_activated = false;
+                $sensor->alarm_cooldown = $data['alarm_cooldown'];
+                $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
+                $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
+            }
+
+            if($data['event_type_id'] == 9)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Aretusa')
+                                ->first();
+                $sensor->alarm_activated = true;
+                $sensor->alarm_cooldown = 0;
+                $sensor->alarm_turned_off_at = null;
+                $sensor->save();
+            }
+            
+            if($data['event_type_id'] == 10)
+            {
+                $sensor = StationSensor::where('station_id', $data['station_id'])
+                                ->where('name', 'Aretusa')
+                                ->first();
+                $sensor->alarm_activated = false;
+                $sensor->alarm_cooldown = $data['alarm_cooldown'];
+                $sensor->alarm_turned_off_at = date("Y-m-d H:i:s");
+                $sensor->save();
+                $responseData['station_sensor'] = $sensor->toArray();
+            }
+
+            $responseData['station_event'] = $this->stationEventTransformer->transform($stationEvent);
             return $this->respondCreated(
-                                    $this->stationEventTransformer->transform($stationEvent), 
+                                    $responseData, 
                                     'Station Event '.$data['event_type_id'].' Created'
                                     );
         }

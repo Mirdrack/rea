@@ -11,7 +11,7 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->createPermission('list-users', 'List Users');
+        /*$this->createPermission('list-users', 'List Users');
         $this->createPermission('create-users', 'Create Users');
         $this->createPermission('edit-users', 'Edit Users');
         $this->createPermission('view-users', 'View Users');
@@ -24,7 +24,14 @@ class PermissionsTableSeeder extends Seeder
         $this->createPermission('delete-roles', 'Delete Groups');
         
         $this->createPermission('list-permissions', 'List Resources');
-        $this->createPermission('view-roles', 'View Resources');
+        $this->createPermission('view-roles', 'View Resources');*/
+
+        $this->createPermission('users', 'View Resources');
+        $this->createPermission('groups', 'View Resources');
+        $this->createPermission('view_stations', 'View Resources');
+        $this->createPermission('alarms_stations', 'View Resources');
+        $this->createPermission('events_stations', 'View Resources');
+        $this->createPermission('station_sensors', 'View Resources');
 
     }
 

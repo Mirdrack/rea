@@ -15,6 +15,7 @@ use Illuminate\Http\Response as HttpResponse;
 */
 
 Route::get('/', function () {
+
     return view('welcome');
 });
 
@@ -33,6 +34,10 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
     Route::post(
       'user/retrieve-role/{user}/{role}', 
       array('as' => 'retrieve-role', 'uses' => 'UserController@retrieveRole')
+    );
+    Route::post(
+      'user/check-permissions', 
+      array('as' => 'permissions', 'uses' => 'UserController@permissions')
     );
     Route::get('user/profile',  array('as' => 'profile', 'uses' => 'UserController@profile'));
     Route::resource('user', 'UserController');
@@ -72,6 +77,9 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
 
     // Station Alarms
     Route::resource('station-alarm', 'StationAlarmController');
+
+    // Station Sensors
+    Route::resource('station-sensor', 'StationSensorController');
 
     // Reports
     Route::post(
