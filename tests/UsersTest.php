@@ -8,7 +8,7 @@ class UsersTest extends ApiTester
 {
     use WithoutMiddleware;
     
-    /*public function test_it_fetches_users()
+    public function test_it_fetches_users()
     {
         $this->make('User');
         $response = $this->getJson('/user', 'GET');
@@ -106,9 +106,9 @@ class UsersTest extends ApiTester
         $this->assertResponseOk();
         $this->assertEquals($response->message, 'Role retrieved');
         $this->notSeeInDatabase('role_user', ['user_id' => $userId, 'role_id' => $roleId]);
-    }*/
+    }
 
-    public function test_it_fetches_user_permissions()
+    /*public function test_it_fetches_user_permissions()
     {
         Auth::loginUsingId(1);
         $permissions = [
@@ -123,7 +123,7 @@ class UsersTest extends ApiTester
         $response = $this->getJson('/user/check-permissions', 'POST', $postData);
         $permissions = $response->data;
         $this->assertResponseOk();
-    }
+    }*/
 
     protected function getStub()
     {

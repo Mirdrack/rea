@@ -13,6 +13,7 @@ class RoleTransformer extends Transformer
             'name' => $object->name,
             'label' => $object->label,
             'created_at' => date('d-m-Y @ H:i:s', strtotime($object->created_at)),
+            'updated_at' => date('d-m-Y @ H:i:s', strtotime($object->updated_at)),
             'permissions' => $object->permissions->toArray(),
         ];
     }
