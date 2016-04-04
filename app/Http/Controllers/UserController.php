@@ -66,12 +66,15 @@ class UserController extends ApiController
         try 
         {
             $user = User::create($credentials);
-            foreach($data['groups'] as $group)
+            if(count($data['groups']) > 0)
             {
-                // For this case groups means roles
-                $role = Role::find((int) $group);
-                if($role)
-                    $user->giveRole($role);
+                foreach($data['groups'] as $group)
+                {
+                    // For this case groups means roles
+                    $role = Role::find((int) $group);
+                    if($role)
+                        $user->giveRole($role);
+                }
             }
             return $this->respondCreated($this->userTransformer->transform($user), 'User Created');
         } 
