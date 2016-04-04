@@ -62,9 +62,17 @@ class UserController extends ApiController
     public function store()
     {
         $credentials = Input::only('name', 'email', 'password');
+        $data = Input::only('groups');
         try 
         {
             $user = User::create($credentials);
+            foreach($data['groups'] as $group)
+            {
+                // For this case groups means roles
+                $role = Role::find((int) $group);
+                if($role)
+                    $user->giveRole($role);
+            }
             return $this->respondCreated($this->userTransformer->transform($user), 'User Created');
         } 
         catch (QueryException $e) 
