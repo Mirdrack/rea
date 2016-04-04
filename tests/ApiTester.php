@@ -46,9 +46,12 @@ abstract class ApiTester extends TestCase
 	{
 		/* 
 		Use this if you need to dump the response
-		$res = $this->call($method, $uri, $params)->getContent();
-		dd($res);
-		return $res;
+		if(strpos($uri, 'login') == false)
+		{
+			$res = $this->call($method, $uri, $params)->getContent();
+			dd($res);
+			return $res;
+		}
 		*/
 		return json_decode($this->call($method, $uri, $params)->getContent());
 	}

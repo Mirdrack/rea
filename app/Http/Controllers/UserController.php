@@ -28,10 +28,19 @@ class UserController extends ApiController
         UserTransformer $userTransformer,
         UpdateUserValidator $updateUserValidator)
     {
-        $this->middleware('jwt.auth');
+        // $action = Route::getCurrentRoute()->getAction();
         $this->auth = $auth;
         $this->userTransformer = $userTransformer;
         $this->updateUserValidator = $updateUserValidator;
+
+        $permissionMiddlewareExceptions = [
+            'profile',
+            'permissions',
+            'changePassword',
+        ];
+
+        $this->middleware('jwt.auth');
+        $this->middleware('permission', ['except' => $permissionMiddlewareExceptions]);
     }
 
     /**
@@ -196,6 +205,25 @@ class UserController extends ApiController
         {
             $permissions = $user->checkPermissions($data['permissions']);
             return $this->respondOk($permissions);
+        }
+    }
+
+    public function changePassword()
+    {
+        $data = Input::only('password');
+
+        // We get the logged user
+        $this->auth->parseToken()->toUser();
+        $token = $this->auth->getToken();
+        $user = $this->auth->toUser($token);
+
+        if(!$user)
+            return $this->respondNotFound('User not found');
+        else
+        {
+            $user->password = $data['password'];
+            $user->save();
+            return $this->respondOk($user);
         }
     }
 }
