@@ -57,6 +57,16 @@ class StationsTest extends ApiTester
         $this->seeInDatabase('stations', ['id' => 1, 'status' => false]);
     }
 
+    public function test_it_updates_a_station_whith_valid_parameters()
+    {
+        $newName = 'newName';
+        $this->getJson('/station/1', 'PUT', ['name' => $newName]);
+        $this->assertResponseStatus(200);
+        $this->seeInDatabase('stations', ['name' => $newName]);
+        $this->notSeeInDatabase('stations', ['name' => 'Station 1']);
+    }
+
+
     protected function getStub()
     {
         return [

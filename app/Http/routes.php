@@ -72,6 +72,7 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
       'station/turn-off', 
       array('as' => 'turn-off', 'uses' => 'StationController@turnOff')
     );
+    Route::resource('station', 'StationController');
 
     // Reads
     Route::resource('read', 'ReadController');

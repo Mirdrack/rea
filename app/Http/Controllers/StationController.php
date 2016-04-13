@@ -3,18 +3,24 @@
 namespace Rea\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Rea\Http\Requests;
 use Rea\Http\Controllers\Controller;
 use Rea\Entities\Station;
 use Rea\Transformers\StationTransformer;
+use Rea\Validators\UpdateStationValidator;
 
 class StationController extends ApiController
 {
     protected $stationTransformer;
+    protected $updateStationValidator;
 
-    public function __construct(StationTransformer $stationTransformer)
+    public function __construct(
+        StationTransformer $stationTransformer,
+        UpdateStationValidator $updateStationValidator)
     {
         $this->stationTransformer = $stationTransformer;
+        $this->updateStationValidator = $updateStationValidator;
     }
 
     /**
@@ -77,7 +83,22 @@ class StationController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        $station = Station::find($id);
+        if(!$station)
+            return $this->respondNotFound('Station not found');
+        else
+        {
+            $isValid = $this->updateStationValidator->with(Input::all())->passes();
+            if($isValid)
+            {
+                $station->fill(Input::all())->save();
+                return $this->respondOk(null, 'Station updated');
+            }
+            else
+            {
+                return $this->respondUnprocessable('Invalid fields');
+            }
+        }
     }
 
     public function turnOn(Request $request)
