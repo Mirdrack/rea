@@ -28,6 +28,10 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
 
     // Users
     Route::post(
+      'user/recovery-password/{email}',
+      array('as' => 'recovery-password', 'uses' => 'UserController@recoveryPassword')
+    );
+    Route::post(
       'user/change-password',
       array('as' => 'change-password', 'uses' => 'UserController@changePassword')
     );

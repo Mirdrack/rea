@@ -98,7 +98,7 @@ class StationEventController extends ApiController
                 $station->save();
 
                 // Mailing
-                Mail::send('emails.turn-on', ['station' => $station], function ($m) use ($station) 
+                Mail::send('emails.turn-off', ['station' => $station], function ($m) use ($station) 
                 {
                     $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
                     foreach(explode(',', $station->notification_emails) as $email)
