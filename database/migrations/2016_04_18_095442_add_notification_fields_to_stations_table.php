@@ -16,8 +16,6 @@ class AddNotificationFieldsToStationsTable extends Migration
             
             $table->text('notification_phones');
             $table->text('notification_emails');
-            $table->text('notification_subject');
-            $table->text('notification_text');
         });
     }
 
@@ -32,8 +30,6 @@ class AddNotificationFieldsToStationsTable extends Migration
 
             $table->dropColumn('notification_phones');
             $table->dropColumn('notification_emails');
-            $table->dropColumn('notification_subject');
-            $table->dropColumn('notification_text');            
         });
     }
 }
