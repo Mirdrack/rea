@@ -2,6 +2,8 @@
 
 namespace Rea\Http\Controllers;
 
+use Mail;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Database\QueryException;
@@ -16,6 +18,7 @@ use Rea\Transformers\UserTransformer;
 use Rea\Validators\UpdateUserValidator;
 
 use Tymon\JWTAuth\JWTAuth;
+use Faker\Factory as FakerFactory;
 
 class UserController extends ApiController
 {
@@ -37,9 +40,10 @@ class UserController extends ApiController
             'profile',
             'permissions',
             'changePassword',
+            'recoveryPassword',
         ];
 
-        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth', ['except' => array('recoveryPassword')]);
         $this->middleware('permission', ['except' => $permissionMiddlewareExceptions]);
     }
 
@@ -235,6 +239,29 @@ class UserController extends ApiController
             $user->password = $data['password'];
             $user->save();
             return $this->respondOk($user);
+        }
+    }
+
+    public function recoveryPassword($email)
+    {
+        $user = User::where('email', $email)->first();
+        if(!$user)
+            return $this->respondNotFound('User not found');
+        else
+        {   
+            $this->faker = FakerFactory::create('es_ES');
+            $newPassword = $this->faker->password;
+            $user->password = $newPassword;
+            $user->save();
+
+            // Mailing
+            Mail::send('emails.password-update', ['user' => $user, 'newPassword' => $newPassword], function ($m) use ($user) 
+            {
+                $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
+                $m->to($user->email)->subject('Nuevo password');
+            });
+
+            return $this->respondOk(null, 'An email with the password has been send it');
         }
     }
 }
