@@ -19,7 +19,7 @@ class Station extends Model
      *
      * @var array
      */
-	protected $fillable = ['name'];
+	protected $fillable = ['name', 'notification_phones', 'notification_emails'];
 
     public function reads()
     {
