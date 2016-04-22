@@ -2,6 +2,7 @@
 
 namespace Rea\Http\Controllers;
 
+use Log;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -13,6 +14,8 @@ use Rea\Entities\StationEvent;
 use Rea\Entities\StationSensor;
 use Rea\Transformers\StationEventTransformer;
 use Rea\Validators\CreateStationEventValidator;
+
+use SimpleSoftwareIO\SMS\Facades\SMS;
 
 class StationEventController extends ApiController
 {
@@ -65,14 +68,61 @@ class StationEventController extends ApiController
                 Mail::send('emails.turn-on', ['station' => $station], function ($m) use ($station) 
                 {
                     $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
-                    $m->to('soporte@aitanastudios.com')->subject('Encendido de pozo!');
+                    foreach(explode(',', $station->notification_emails) as $email)
+                    {
+                        $m->to(trim($email))->subject('Encendido de pozo');
+                    }
                 });
+
+                // SMS
+                foreach(explode(',', $station->notification_phones) as $phone)
+                {
+                    // This gonna be enable later
+                    /*SMS::send('Encendido de pozo!', [], function($sms) use ($phone)
+                    {
+                        $sms->to('52'.trim($phone));
+                        Log::info(trim($phone));
+                    });*/
+
+                    $message = urlencode('Notificacion. El pozo ha sido encendido!');
+                    $cmd = 'curl "https://rest.nexmo.com/sms/json?api_key=fafb755e&api_secret=03839dee49047354&from=MONITOREO&to=52'.trim($phone).'&text='.$message.'"';
+
+                    Log::info($cmd);
+                    shell_exec($cmd);
+                }
             }
             
             if($data['event_type_id'] == 2)
             {
                 $station->status = false;
                 $station->save();
+
+                // Mailing
+                Mail::send('emails.turn-on', ['station' => $station], function ($m) use ($station) 
+                {
+                    $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
+                    foreach(explode(',', $station->notification_emails) as $email)
+                    {
+                        $m->to(trim($email))->subject('Encendido de pozo');
+                    }
+                });
+
+                // SMS
+                foreach(explode(',', $station->notification_phones) as $phone)
+                {
+                    // This gonna be enable later
+                    /*SMS::send('El pozo ha sido apagado!', [], function($sms) use ($phone)
+                    {
+                        $sms->to('52'.trim($phone));
+                        Log::info(trim($phone));
+                    });*/
+
+                    $message = urlencode('Notificacion. El pozo ha sido apagado!');
+                    $cmd = 'curl "https://rest.nexmo.com/sms/json?api_key=fafb755e&api_secret=03839dee49047354&from=MONITOREO&to=52'.trim($phone).'&text='.$message.'"';
+
+                    Log::info($cmd);
+                    shell_exec($cmd);
+                }
             }
 
             if($data['event_type_id'] == 3)

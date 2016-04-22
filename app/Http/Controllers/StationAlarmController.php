@@ -2,6 +2,7 @@
 
 namespace Rea\Http\Controllers;
 
+use Log;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -93,12 +94,11 @@ class StationAlarmController extends ApiController
             {
                 try {
 
-                    $whatsappCmd  = 'yowsup-cli demos ';
-                    $whatsappCmd .= '--send 521'.trim($phone).' '; 
-                    $whatsappCmd .= '"'.$sensor->notification_text.'"  ';
-                    $whatsappCmd .= '--config /home/ubuntu/python/yowsup/config.txt -M 2>&1';
-                    
-                    $shellResult = shell_exec($whatsappCmd);
+                    $message = urlencode($sensor->notification_text);
+                    $cmd = 'curl "https://rest.nexmo.com/sms/json?api_key=fafb755e&api_secret=03839dee49047354&from=MONITOREO&to=52'.trim($phone).'&text='.$message.'"';
+
+                    Log::info($cmd);
+                    shell_exec($cmd);
 
                     } catch (Exception $e) {
 

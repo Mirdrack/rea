@@ -151,6 +151,7 @@ return [
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'Barryvdh\Cors\ServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        SimpleSoftwareIO\SMS\SMSServiceProvider::class,
 
     ],
 
@@ -204,6 +205,7 @@ return [
         'JWTAuth'    => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+        'SMS' => SimpleSoftwareIO\SMS\Facades\SMS::class,
 
     ],
 
