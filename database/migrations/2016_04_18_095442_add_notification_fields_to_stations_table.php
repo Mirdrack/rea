@@ -14,8 +14,8 @@ class AddNotificationFieldsToStationsTable extends Migration
     {
         Schema::table('stations', function (Blueprint $table) {
             
-            $table->text('notification_phones');
-            $table->text('notification_emails');
+            $table->text('notification_phones')->default('');
+            $table->text('notification_emails')->default('');
         });
     }
 
