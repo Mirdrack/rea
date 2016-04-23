@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Roles and Users tables has been seeded!');
         $this->call('StationsTableSeeder');
         $this->command->info('Stations table has been seeded!');
+        $this->call('Stations2TableSeeder');
+        $this->command->info('Stations table has been updated!');
         $this->call('ReadsTableSeeder');
         $this->command->info('Reads table has been seeded!');
         $this->call('AlarmsTableSeeder');
