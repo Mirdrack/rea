@@ -12,18 +12,23 @@ use Rea\Entities\User;
 use Rea\Entities\PasswordReset;
 
 use Rea\Validators\PasswordRecoveryValidator;
+use Rea\Validators\PasswordResetValidator;
 
 use Faker\Factory as FakerFactory;
 
 class PasswordController extends ApiController
 {
     protected $faker;
+    protected $passwordResetValidator;
     protected $passwordRecoveryValidator;
 
-    public function __construct(PasswordRecoveryValidator $passwordRecoveryValidator)
+    public function __construct(
+        PasswordRecoveryValidator $passwordRecoveryValidator,
+        PasswordResetValidator $passwordResetValidator)
     {
-        $this->passwordRecoveryValidator = $passwordRecoveryValidator;
         $this->faker = FakerFactory::create();
+        $this->passwordResetValidator = $passwordResetValidator;
+        $this->passwordRecoveryValidator = $passwordRecoveryValidator;
     }
 
     /**
@@ -59,7 +64,7 @@ class PasswordController extends ApiController
                 $m->to($user->email)->subject('Nuevo password');
             });
 
-            return $this->respondCreated(null, 'An email with password rest instruction has been sent');
+            return $this->respondOk(null, 'An email with password rest instruction has been sent');
         }
     }
 
@@ -71,14 +76,30 @@ class PasswordController extends ApiController
      */
     public function reset(Request $request)
     {
-        // get request data
-        // 
-        // validate data
-        
-        // if not valid response with 404
-        // 
-        // if yes update password
-        // 
-        // response with 200
+        $data = $request->all();
+        $isValid = $this->passwordResetValidator->with($data)->passes();
+
+        if(!$isValid)
+            return $this->respondNotFound('Invalid');
+
+        $email = $request->get('email');
+        $token = $request->get('token');
+        $newPassword = $request->get('password');
+
+        $passwordReset = PasswordReset::where('email', $email)
+                                        ->where('token', $token)
+                                        ->first();
+        if(!$passwordReset)
+            return $this->respondUnprocessable('Invalid token');
+        else
+        {
+            PasswordReset::where('email', $email)
+                            ->where('token', $token)
+                            ->delete();
+            $user = User::where('email', $email)->first();
+            $user->password = $newPassword;
+            $user->save();
+            return $this->respondOk(null, 'Password has been reseted');
+        }
     }
 }

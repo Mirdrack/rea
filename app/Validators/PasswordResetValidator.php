@@ -9,8 +9,8 @@ class PasswordResetValidator extends Validator
 {
 	
 	protected $rules = [
-                'name' => 'min:3',
+                'token' => 'required',
+                'email' => 'required|email',
                 'password' => 'min:6',
-                'email' => 'email'
             ];
 }

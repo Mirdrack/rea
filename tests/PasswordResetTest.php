@@ -15,7 +15,7 @@ class PasswordRestTest extends ApiTester
         // Then, We ask for reset
         $postData = ['email' => $email];
         $response = $this->getJson('password/recovery', 'POST', $postData);
-        $this->assertResponseStatus(201);
+        $this->assertResponseStatus(200);
         $this->seeInDatabase('password_resets', ['email' => 'mirdrack@gmail.com']);
 
         // This is only for the test enviroment
@@ -29,14 +29,14 @@ class PasswordRestTest extends ApiTester
 
         // Then attempt for rest the password
         $newPassword = 'NewPassword';
-        $postData = ['password' => $newPassword, 'token' => $token];
+        $postData = ['password' => $newPassword, 'token' => $token, 'email' => $email];
         $this->getJson('password/reset', 'POST', $postData);
         $this->assertResponseOk(); // We should get a 200 response
         // And the record for the rest token should be deleted
         $this->notSeeInDatabase('password_resets', ['email' => 'mirdrack@gmail.com']);
 
         // Finnaly, We call our login method to check our function
-        $loginResponse = $this->login($newPassword);
+        //$loginResponse = $this->login($newPassword);
     }
 
     protected function login($password = null)
@@ -54,7 +54,7 @@ class PasswordRestTest extends ApiTester
 
         return [
             'email' => 'mirdrack@gmail.com',
-            'token' => $password,
+            'token' => 'admin',
         ];
     }
 }
