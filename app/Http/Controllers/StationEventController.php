@@ -103,7 +103,7 @@ class StationEventController extends ApiController
                     $m->from('aitanastudios@gmail.com', 'Sistema de Monitoreo');
                     foreach(explode(',', $station->notification_emails) as $email)
                     {
-                        $m->to(trim($email))->subject('Encendido de pozo');
+                        $m->to(trim($email))->subject('Apagado de pozo');
                     }
                 });
 
