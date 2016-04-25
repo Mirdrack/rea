@@ -104,4 +104,15 @@ Route::group(['domain' => env('DOMAIN'), 'middleware' => 'cors'], function ()
       array('as' => 'generate', 'uses' => 'ChartController@generateXls')
     );
 
+    // Password resets
+    Route::post(
+      'password/recovery',
+      array('as' => 'recovery', 'uses' => 'PasswordController@recovery')
+    );
+
+    Route::post(
+      'password/reset',
+      array('as' => 'reset', 'uses' => 'PasswordController@reset')
+    );
 });
+
