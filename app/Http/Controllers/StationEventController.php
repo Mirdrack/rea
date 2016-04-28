@@ -33,7 +33,15 @@ class StationEventController extends ApiController
     public function index()
     {
         $limit = Input::get('limit') ?: self::PAGE_LIMIT;
-        $stationEvents = StationEvent::orderBy('id', 'desc')->paginate($limit);
+        $filterId = Input::get('filter');
+        if($filterId)
+        {
+            $stationEvents = StationEvent::where('event_type_id', $filterId)
+                                        ->orderBy('id', 'desc')
+                                        ->paginate($limit); 
+        }
+        else
+            $stationEvents = StationEvent::orderBy('id', 'desc')->paginate($limit);
 
         if($stationEvents)
         {
