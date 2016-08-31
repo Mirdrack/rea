@@ -30,7 +30,17 @@ class StationController extends ApiController
      */
     public function index()
     {
-        $stations = Station::all();
+        $stations = Station::with(
+            array(
+                'reads' => function($query)
+                {
+                    $query->orderBy('id', 'desc')
+                           ->limit(5);
+                }
+            )
+        )
+        ->where('id', '>', 0)
+        ->get();
         $this->stationTransformer->transformCollection($stations);
         return $this->respondOk($this->stationTransformer->transformCollection($stations));
     }
